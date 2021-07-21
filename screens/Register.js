@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import {
   View,
   Button,
+  Picker,
   TextInput,
   StyleSheet,
   TouchableOpacity,
   Text,
   ImageBackground,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+// import { Picker } from "@react-native-picker/picker";
 import firebase from "firebase";
 import { validateAll } from "indicative/validator";
 import "firebase/firestore";
@@ -177,7 +178,7 @@ export class Register extends Component {
               {this.state.error["password_confirmation"]}
             </Text>
           )}
-          <View style={styles.textBoxView}>
+          <View style={styles.testView}>
             <TextInput
               style={styles.textBox}
               placeholder="Password"
@@ -196,103 +197,86 @@ export class Register extends Component {
               }
             />
           </View>
-
-          <View style={styles.textBoxView}>
+          <View style={styles.pickerView}>
             <Picker
               style={styles.picker}
-              onValueChange={(city) => this.setState({ city })}
-            >
-              <Picker.Item label="City"> City </Picker.Item>
-              <Picker.Item label="Barrie">Barrie </Picker.Item>
-              <Picker.Item label="Belleville">Belleville</Picker.Item>
-              <Picker.Item label="Brampton">Brampton</Picker.Item>
-              <Picker.Item label="Brant">Brant</Picker.Item>
-              <Picker.Item label="Brantford">Brantford</Picker.Item>
-              <Picker.Item label="Brockville">Brockville</Picker.Item>
-              <Picker.Item label="Burlington">Burlington</Picker.Item>
-              <Picker.Item label="Cambridge">Cambridge</Picker.Item>
-              <Picker.Item label="Clarence-Rockland">
-                Clarence-Rockland
-              </Picker.Item>
-              <Picker.Item label="Cornwall">Cornwall</Picker.Item>
-              <Picker.Item label="Dryden">Dryden</Picker.Item>
-              <Picker.Item label="Elliot Lake">Elliot Lake</Picker.Item>
-              <Picker.Item label="Greater Sudbury">Greater Sudbury</Picker.Item>
-              <Picker.Item label="Guelph">Guelph</Picker.Item>
-              <Picker.Item label="Haldimand County">
-                Haldimand County
-              </Picker.Item>
-              <Picker.Item label="Hamilton">Hamilton</Picker.Item>
-              <Picker.Item label="Kawartha Lakes">Kawartha Lakes</Picker.Item>
-              <Picker.Item label="Kenora">Kenora</Picker.Item>
-              <Picker.Item label="Kingston">Kingston</Picker.Item>
-              <Picker.Item label="Kitchener">Kitchener</Picker.Item>
-              <Picker.Item label="London">London</Picker.Item>
-              <Picker.Item label="Markham">Markham</Picker.Item>
-              <Picker.Item label="Mississauga">Mississauga</Picker.Item>
-              <Picker.Item label="Niagara Falls">Niagara Falls</Picker.Item>
-              <Picker.Item label="Norfolk County">Norfolk County</Picker.Item>
-              <Picker.Item label="North Bay">North Bay</Picker.Item>
-              <Picker.Item label="Orillia">Orillia</Picker.Item>
-              <Picker.Item label="Oshawa">Oshawa</Picker.Item>
-              <Picker.Item label="Ottawa">Ottawa</Picker.Item>
-              <Picker.Item label="Owen Sound">Owen Sound</Picker.Item>
-              <Picker.Item label="Pembroke">Pembroke</Picker.Item>
-              <Picker.Item label="Peterborough">Peterborough</Picker.Item>
-              <Picker.Item label="Pickering">Pickering</Picker.Item>
-              <Picker.Item label="Port Colborne">Port Colborne</Picker.Item>
-              <Picker.Item label="Prince Edward County">
-                Prince Edward County
-              </Picker.Item>
-              <Picker.Item label="Quinte West">Quinte West</Picker.Item>
-              <Picker.Item label="Richmond Hill">CRichmond Hillity</Picker.Item>
-              <Picker.Item label="Sarnia">Sarnia</Picker.Item>
-              <Picker.Item label="Sault Ste. Marie">
-                Sault Ste. Marie
-              </Picker.Item>
-              <Picker.Item label="St. Catharines">St. Catharines</Picker.Item>
-              <Picker.Item label="St. Thomas">St. Thomas</Picker.Item>
-              <Picker.Item label="Stratford">Stratford</Picker.Item>
-              <Picker.Item label="Temiskaming Shores">
-                Temiskaming Shores
-              </Picker.Item>
-              <Picker.Item label="Thorold">Thorold</Picker.Item>
-              <Picker.Item label="Thunder Bay">Thunder Bay</Picker.Item>
-              <Picker.Item label="Timmins">Timmins</Picker.Item>
-              <Picker.Item label="Toronto">Toronto</Picker.Item>
-              <Picker.Item label="Vaughan">Vaughan</Picker.Item>
-              <Picker.Item label="Waterloo">Waterloo</Picker.Item>
-              <Picker.Item label="Welland">Welland</Picker.Item>
-              <Picker.Item label="Windsor">Windsor</Picker.Item>
-              <Picker.Item label="Woodstock">Woodstock</Picker.Item>
+              selectedValue={ this.state.city }
+              onValueChange={(itemValue, itemIndex) => this.setState({city: itemValue})}>
+              <Picker.Item label="City" value = " City "/>
+              <Picker.Item label="Barrie" value = "Barrie "/>
+              <Picker.Item label="Belleville" value = "Belleville"/>
+              <Picker.Item label="Brampton" value = "Brampton"/>
+              <Picker.Item label="Brant" value = "Brant"/>
+              <Picker.Item label="Brantford" value = "Brantford"/>
+              <Picker.Item label="Brockville" value = "Brockville"/>
+              <Picker.Item label="Burlington" value = "Burlington"/>
+              <Picker.Item label="Cambridge" value = "Cambridge"/>
+              <Picker.Item label="Clarence-Rockland" value = "Clarence-Rockland"/>
+              <Picker.Item label="Cornwall" value = "Cornwall"/>
+              <Picker.Item label="Dryden" value = "Dryden"/>
+              <Picker.Item label="Elliot Lake" value = "Elliot Lake"/>
+              <Picker.Item label="Greater Sudbury" value = "Greater Sudbury"/>
+              <Picker.Item label="Guelph" value = "Guelph"/>
+              <Picker.Item label="Haldimand County" value = "Haldimand County"/>
+              <Picker.Item label="Hamilton" value = "Hamilton"/>
+              <Picker.Item label="Kawartha Lakes" value = "Kawartha Lakes"/>
+              <Picker.Item label="Kenora" value = "Kenora"/>
+              <Picker.Item label="Kingston" value = "Kingston"/>
+              <Picker.Item label="Kitchener" value = "Kitchener"/>
+              <Picker.Item label="London" value = "London"/>
+              <Picker.Item label="Markham" value = "Markham"/>
+              <Picker.Item label="Mississauga" value = "Mississauga"/>
+              <Picker.Item label="Niagara Falls" value = "Niagara Falls"/>
+              <Picker.Item label="Norfolk County" value = "Norfolk County"/>
+              <Picker.Item label="North Bay" value = "North Bay"/>
+              <Picker.Item label="Orillia" value = "Orillia"/>
+              <Picker.Item label="Oshawa" value = "Oshawa"/>
+              <Picker.Item label="Ottawa" value = "Ottawa"/>
+              <Picker.Item label="Owen Sound" value = "Owen Sound"/>
+              <Picker.Item label="Pembroke" value = "Pembroke"/>
+              <Picker.Item label="Peterborough" value = "Peterborough"/>
+              <Picker.Item label="Pickering" value = "Pickering"/>
+              <Picker.Item label="Port Colborne" value = "Port Colborne"/>
+              <Picker.Item label="Prince Edward C." value = "Prince Edward County"/>
+              <Picker.Item label="Quinte West" value = "Quinte West"/>
+              <Picker.Item label="Richmond Hill" value = "CRichmond Hillity"/>
+              <Picker.Item label="Sarnia" value = "Sarnia"/>
+              <Picker.Item label="Sault Ste. Marie" value = "Sault Ste. Marie"/>
+              <Picker.Item label="St. Catharines" value = "St. Catharines"/>
+              <Picker.Item label="St. Thomas" value = "St. Thomas"/>
+              <Picker.Item label="Stratford" value = "Stratford"/>
+              <Picker.Item label="Temiskaming Shores" value = "Temiskaming Shores"/>
+              <Picker.Item label="Thorold" value = "Thorold"/>
+              <Picker.Item label="Thunder Bay" value = "Thunder Bay"/>
+              <Picker.Item label="Timmins" value = "Timmins"/>
+              <Picker.Item label="Toronto" value = "Toronto"/>
+              <Picker.Item label="Vaughan" value = "Vaughan"/>
+              <Picker.Item label="Waterloo" value = "Waterloo"/>
+              <Picker.Item label="Welland" value = "Welland"/>
+              <Picker.Item label="Windsor" value = "Windsor"/>
+              <Picker.Item label="Woodstock" value = "Woodstock"/>
             </Picker>
+            
             <View style={styles.space}></View>
             <Picker
               style={styles.picker}
-              onValueChange={(province) => this.setState({ province })}
-            >
-              <Picker.Item label="Province"> City </Picker.Item>
-              <Picker.Item label="Alberta">Alberta </Picker.Item>
-              <Picker.Item label="British Columbia">
-                British Columbia
-              </Picker.Item>
-              <Picker.Item label="Manitoba">Manitoba</Picker.Item>
-              <Picker.Item label="New Brunswick">New Brunswick</Picker.Item>
-              <Picker.Item label="Newfoundland and Labrador">
-                Newfoundland and Labrador
-              </Picker.Item>
-              <Picker.Item label="Northwest Territories">
-                Northwest Territories
-              </Picker.Item>
-              <Picker.Item label="Nova Scotia">Nova Scotia</Picker.Item>
-              <Picker.Item label="Nunavut">Nunavut</Picker.Item>
-              <Picker.Item label="Ontario">Ontario</Picker.Item>
-              <Picker.Item label="Prince Edward Island">
-                Prince Edward Island
-              </Picker.Item>
-              <Picker.Item label="Quebec">Quebec</Picker.Item>
-              <Picker.Item label="Saskatchewan">Saskatchewan</Picker.Item>
-              <Picker.Item label="Yukon">Yukon</Picker.Item>
+              selectedValue={ this.state.province }
+              onValueChange={(itemValue, itemIndex) => this.setState({province: itemValue})}>
+            
+              <Picker.Item label="Province"/>
+              <Picker.Item label="Alberta" value="Alberta"/>
+              <Picker.Item label="British Columbia"value="British Columbia"/>
+              <Picker.Item label="Manitoba" value="Manitoba"/>
+              <Picker.Item label="New Brunswick"value="New Brunswick"/>
+              <Picker.Item label="N.L"value="Newfoundland and Labrador"/>
+              <Picker.Item label="N.W.T."value="Northwest Territories"/>
+              <Picker.Item label="Nova Scotia"value="Nova Scotia"/>
+              <Picker.Item label="Nunavut"value="Nunavut"/>
+              <Picker.Item label="Ontario" value="Ontario"/>
+              <Picker.Item label="P.E.I"value="Prince Edward Island"/>
+              <Picker.Item label="Quebec" value="Quebec"/>
+              <Picker.Item label="Saskatchewan" value="Saskatchewan"/>
+              <Picker.Item label="Yukon" value="Yukon"/>
             </Picker>
           </View>
 
@@ -324,10 +308,18 @@ const styles = StyleSheet.create({
     width: 200,
   },
   space: {
-    width: 20,
+    width: 0,
     height: 10,
   },
   textBoxView: {
+    flexDirection: "row",
+    marginBottom: 40,
+  },
+  testView: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  pickerView: {
     flexDirection: "row",
     marginBottom: 40,
   },
@@ -357,18 +349,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
   },
-  picker: {
-    height: 58,
-    width: 190,
-    marginHorizontal: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    backgroundColor: "white",
-    color: "black",
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
+  picker:{
+      width: 190,
+      height: 200,
+      marginHorizontal: 8,
+      backgroundColor: "white",
+      shadowColor: "#000",
+      shadowOffset: { width: 2, height: 4 },
+      shadowOpacity: 0.8,
+      shadowRadius: 1,
   },
   textElement: {
     fontSize: 25,
