@@ -148,7 +148,7 @@ export class Register extends Component {
           <View style={styles.textBoxView}>
             <TextInput
               style={styles.eBox}
-              placeholder="E-mail"
+              placeholder="Email Address"
               placeholderTextColor="black"
               onChangeText={(email) => this.setState({ email })}
             />
