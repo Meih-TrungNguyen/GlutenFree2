@@ -27,7 +27,9 @@ export default class AddItem extends Component {
       consumer: "1",
       quantity: "",
       search: "",
-      activeSwitch: null,
+      glutenSwitch:false,
+      taxSwitch:false,
+      medSwitch:false,
     };
   }
 
@@ -37,23 +39,32 @@ export default class AddItem extends Component {
     this.setState({ search });
   };
 
-  toggleSwitch = (switchNumber) => {
-    this.setState({
-      activeSwitch:
-        switchNumber === this.state.activeSwitch ? null : switchNumber,
-    });
-  };
+
 
   GlutenSwitch = (value) => {
-    this.toggleSwitch(1);
-  };
+    if(this.state.glutenSwitch){
+        this.setState({glutenSwitch: false})
+    }
+    else{
+        this.setState({glutenSwitch: true})
+    }
+  }
   TaxSwitch = (value) => {
-    this.toggleSwitch(2);
-  };
+      if(this.state.taxSwitch){
+          this.setState({taxSwitch: false})
+      }
+      else{
+          this.setState({taxSwitch: true})
+      }
+  }
   MedSwitch = (value) => {
-    this.toggleSwitch(3);
-  };
-
+      if(this.state.medSwitch){
+          this.setState({medSwitch: false})
+      }
+      else{
+          this.setState({medSwitch: true})
+      }
+  }
   /**this function validate the ItemName field,
    * it can not be EMPTY, and only contains letters
    */
@@ -163,10 +174,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Gluten Free</Text>
             <View style={styles.switchButton}>
-              <Switch
+            <Switch 
                 onValueChange={this.GlutenSwitch}
-                value={this.state.activeSwitch === 1}
-              />
+                value={this.state.glutenSwitch}
+                /> 
             </View>
           </View>
           {/* consumers field */}
@@ -195,10 +206,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Taxable</Text>
             <View style={styles.switchButton}>
-              <Switch
-                onValueChange={this.TaxSwitch}
-                value={this.state.activeSwitch === 2}
-              />
+              <Switch 
+                  onValueChange={this.TaxSwitch}
+                  value={this.state.taxSwitch}
+                  /> 
             </View>
           </View>
 
@@ -206,10 +217,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Medical Expense</Text>
             <View style={styles.switchButton}>
-              <Switch
-                onValueChange={this.MedSwitch}
-                value={this.state.activeSwitch === 3}
-              />
+              <Switch 
+                  onValueChange={this.MedSwitch}
+                  value={this.state.medSwitch}
+              /> 
             </View>
           </View>
 

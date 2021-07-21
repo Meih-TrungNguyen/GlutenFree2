@@ -81,14 +81,13 @@ export class PasswordRecover extends Component {
       >
         <View style={styles.screenContainer}>
           <View style={styles.textBoxView}>
-            <Text style={{ marginRight: 5, fontSize: 30 }}>Email:</Text>
-            {/* <View style={styles.space}/> */}
             <TextInput
               style={styles.textBox}
+              placeholder="Enter Registered Email"
               onChangeText={(email) => this.setState({ email })}
             />
           </View>
-
+          <View style={styles.space} />
           <View style={styles.buttons}>
             <TouchableOpacity onPress={() => this.validate()}>
               <Text style={styles.textElement}>Send Recovery Email</Text>
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttons: {
-    backgroundColor: "grey",
+    backgroundColor: "lightgrey",
     fontSize: 200,
     height: 50,
     width: 260,
@@ -126,13 +125,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   textBox: {
-    paddingVertical: 10,
-    flex: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    marginHorizontal: 30,
     backgroundColor: "white",
-    color: "black",
-    fontSize: 20,
     shadowColor: "#000",
-    shadowOffset: { width: 2, height: 4 },
+    flex: 1,
+    borderWidth: 1,
+    shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
   },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginTop: 8,
     textAlign: "center",
-    color: "white",
+    color: "black",
   },
 });
 export default PasswordRecover;

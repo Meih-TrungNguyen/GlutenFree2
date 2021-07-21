@@ -106,7 +106,7 @@ export class Login extends Component {
           <View style={styles.textBoxView}>
             <TextInput
               style={styles.textBox}
-              placeholder="Your email..."
+              placeholder="Enter Email"
               onChangeText={(email) => this.setState({ email })}
             />
           </View>
@@ -125,7 +125,7 @@ export class Login extends Component {
           <View style={styles.textBoxView}>
             <TextInput
               style={styles.textBox}
-              placeholder="Your Password..."
+              placeholder="Enter Password"
               secureTextEntry={true}
               onChangeText={(password) => this.setState({ password })}
             />
