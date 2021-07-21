@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
 import { CSVLink } from "react-csv";
+import {
+  Text,
+  View,
+  Button,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 
 class Report extends Component {
 
@@ -36,26 +45,78 @@ class Report extends Component {
     render() {
         const { data } = this.state;
         return (
-            <div>
-                <input
-                    type="button"
-                    value="Export to CSV"
-                    onClick={this.downloadReport}>
-                </input>
-                <input
-                    type="button"
-                    value="Export to Excel"
+
+                <ImageBackground
+                    source={require("../assets/Home-screen.jpg")}
+                    style={styles.backgroundImage}
                 >
-                </input>
-                <CSVLink
-                    headers={this.headers}
-                    data={data}
-                    filename="Report_test.csv"
-                    ref={this.csvLinktEl}>
-                </CSVLink>
-            </div>
+                <View style={styles.screenContainer}>
+                    <Text style={styles.textBox}>GlutenFree Report</Text> 
+
+                    <View style={styles.buttons}>
+                        <TouchableOpacity onPress={this.downloadReport}>
+                            <Text style={styles.textElement}>Export to CSV</Text>
+                        </TouchableOpacity> 
+
+                    </View> 
+                    
+                    <View style={styles.space} />
+
+                    <View style={styles.buttons}> 
+                        <TouchableOpacity >
+                            <Text style={styles.textElement}>Export to Excel</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <CSVLink
+                        headers={this.headers}
+                        data={data}
+                        filename="Report_test.csv"
+                        ref={this.csvLinktEl}>
+                    </CSVLink>
+                </View>    
+
+                </ImageBackground>
+
+
+            
         )
     }
 }
+
+const styles = StyleSheet.create({
+    screenContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 300,
+    },
+    backgroundImage: {
+      flex: 1,
+      resizeMode: "cover",
+      justifyContent: "center",
+    },
+    buttons: {
+      backgroundColor: "lightgrey",
+      color: "white",
+      fontSize: 200,
+      height: 50,
+      width: 200,
+    },
+    space: {
+      width: 20,
+      height: 20,
+    },
+    textBox: {
+      marginBottom: 100,
+      fontSize: 45,
+      color: "brown",
+    },
+    textElement: {
+      fontSize: 25,
+      marginTop: 8,
+      textAlign: "center",
+    },
+  });
 
 export default Report;
