@@ -5,6 +5,9 @@ import { Ionicons, AntDesign, Fontisto, Octicons } from "@expo/vector-icons"
 import img1 from './images/image1.jpg';
 import img2 from './images/image2.jpg';
 import img3 from './images/image3.jpg';
+import img4 from './images/image4.jpg';
+import img5 from './images/image5.jpg';
+import img6 from './images/image6.jpg';
 
 export default class LinkItem extends Component {
   constructor(props) {
@@ -59,6 +62,7 @@ export default class LinkItem extends Component {
 
       <ImageBackground source={require('../assets/Home-screen.jpg')} style={styles.backgroundImage}>
 
+        <View style={styles.screenContainer}>
         <View style={styles.topView}>
           <View>
             <TouchableOpacity onPress={() => this.props.navigation.navigate("NewCart")} title="Go NewCart">
@@ -80,6 +84,7 @@ export default class LinkItem extends Component {
         </View>
 
         <View style={styles.textElement}>
+          <View style={styles.product}>
           <Text style={styles.itemText}>Made Good Granola Bars</Text>
           <Text style={styles.itemText}>$ 4.99</Text>
           <View style={styles.image}>
@@ -92,11 +97,10 @@ export default class LinkItem extends Component {
             <TouchableOpacity title="button">
               <AntDesign onClick={() => this.onDelete({ id: 1 })} name="minus" size={35} color="black" />
             </TouchableOpacity>
-            <br />
-            <br />
-            <br />
+          </View>
           </View>
 
+          <View style={styles.product}>
           <Text style={styles.itemText}>Bread</Text>
           <Text style={styles.itemText}>$ 6.99</Text>
           <View style={styles.image}>
@@ -104,16 +108,15 @@ export default class LinkItem extends Component {
           </View>
           <View style={styles.TouchButton}>
             <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 1 })} name="plus" size={35} color="black" />
+              <AntDesign onClick={() => this.onAdd({ id: 2 })} name="plus" size={35} color="black" />
             </TouchableOpacity>
             <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 1 })} name="minus" size={35} color="black" />
+              <AntDesign onClick={() => this.onDelete({ id: 2 })} name="minus" size={35} color="black" />
             </TouchableOpacity>
-            <br />
-            <br />
-            <br />
+          </View>
           </View>
 
+          <View style={styles.product}>
           <Text style={styles.itemText}>Bens Original Ready Rice</Text>
           <Text style={styles.itemText}>$ 7.99</Text>
           <View style={styles.image}>
@@ -121,12 +124,65 @@ export default class LinkItem extends Component {
           </View>
           <View style={styles.TouchButton}>
             <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 1 })} name="plus" size={35} color="black" />
+              <AntDesign onClick={() => this.onAdd({ id: 3 })} name="plus" size={35} color="black" />
             </TouchableOpacity>
             <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 1 })} name="minus" size={35} color="black" />
+              <AntDesign onClick={() => this.onDelete({ id: 3 })} name="minus" size={35} color="black" />
             </TouchableOpacity>
           </View>
+          </View>
+        </View>
+
+        <View style={styles.textElement}>
+          <View style={styles.product}>
+          <Text style={styles.itemText}>DIGIORNO RISING CRUST</Text>
+          <Text style={styles.itemText}>$ 10.99</Text>
+          <View style={styles.image}>
+            <img src={img4} />
+          </View>
+          <View style={styles.TouchButton}>
+            <TouchableOpacity title="button">
+              <AntDesign onClick={() => this.onAdd({ id: 4 })} name="plus" size={35} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity title="button">
+              <AntDesign onClick={() => this.onDelete({ id: 4 })} name="minus" size={35} color="black" />
+            </TouchableOpacity>
+          </View>
+          </View>
+
+          <View style={styles.product}>
+          <Text style={styles.itemText}>Budweiser (dozen)</Text>
+          <Text style={styles.itemText}>$ 23.88</Text>
+          <View style={styles.image}>
+            <img src={img5} />
+          </View>
+          <View style={styles.TouchButton}>
+            <TouchableOpacity title="button">
+              <AntDesign onClick={() => this.onAdd({ id: 5 })} name="plus" size={35} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity title="button">
+              <AntDesign onClick={() => this.onDelete({ id: 5 })} name="minus" size={35} color="black" />
+            </TouchableOpacity>
+          </View>
+          </View>
+
+          <View style={styles.product}>
+          <Text style={styles.itemText}>Quaker Instant Oatmeal</Text>
+          <Text style={styles.itemText}>$ 5.99</Text>
+          <View style={styles.image}>
+            <img src={img6} />
+          </View>
+          <View style={styles.TouchButton}>
+            <TouchableOpacity title="button">
+              <AntDesign onClick={() => this.onAdd({ id: 6 })} name="plus" size={35} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity title="button">
+              <AntDesign onClick={() => this.onDelete({ id: 6 })} name="minus" size={35} color="black" />
+            </TouchableOpacity>
+          </View>
+          </View>
+        </View>
+
 
         </View>
       </ImageBackground>
@@ -145,12 +201,15 @@ const styles = StyleSheet.create({
     justifyContent: "center"
 
   },
+  screenContainer: {
+    flex: 1,
+  },
   text: {
     fontSize: 50,
     textAlign: 'center',
   },
   textBoxView: {
-    flex: 3,
+    flex: 1,
     marginTop: 10,
     alignItems: "flex-end"
   },
@@ -170,6 +229,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 8,
     textAlign: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   button: {
     height: 80,
@@ -177,12 +238,10 @@ const styles = StyleSheet.create({
   },
   TouchButton: {
     flexDirection: 'row',
-    left: 750
   },
   image: {
     width: 250,
     height: 250,
-    left: 670,
   },
   itemText: {
     fontSize: 25,
