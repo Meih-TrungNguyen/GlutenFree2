@@ -1,43 +1,102 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Component } from 'react';
 import { Text, View, TouchableOpacity, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
-import {Ionicons, AntDesign, Entypo, MaterialCommunityIcons} from "@expo/vector-icons"
+import { ListItem, Icon } from 'react-native-elements';
 
-export default function ViewCart(props){
+import {Ionicons, AntDesign, Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
+
+export default class ViewCart extends Component{
+
+    constructor(props) {
+        super(props);
     
-        return(
-            <div>
+        this.state = {
+          name: " ",
+          price:" ",
+          quantity:"",
+          icon:"",
+          
+        };
+    }
+
+    editItem(){
+
+    }
+    
+    
+    render() {
+        const list = [
+            {
+                name: 'banana',
+                price: '3',
+                quantity: '1',
+                icon: 'av-timer'
+            },
+            {
+                name: 'apple',
+                price: '3',
+                quantity: '1',
+                icon: 'av-timer'
+            },
+            {
+                name: 'cucumber',
+                price: '3',
+                quantity: '1',
+                icon: 'av-timer'
+            },
+            {
+                name: 'lettuce',
+                price: '3',
+                quantity: '1',
+                icon: 'av-timer'
+            },
+        ]
+        
+        return (
             <ImageBackground source={require('../assets/Home-screen.jpg')} style={styles.backgroundImage} >
             <SafeAreaView>
-                <TouchableOpacity>
-                    <Ionicons name="construct" size={100} color="black" />
-                    <Text>????????????</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Ionicons name="construct" size={100} color="black" />
-                    <Text>UNDER CONSTRUCTION</Text>
-                </TouchableOpacity>
-
-                <View style={styles.buttonView}>
+            <View>
+                {
+                    list.map((item, i) => (
+                        <ListItem key={i} bottomDivider>
+                            <Icon name={item.icon} />
+                            <ListItem.Content>
+                                <ListItem.Title>
+                                    <Text>name: </Text>
+                                    {item.name}
+                                </ListItem.Title>
+                                <ListItem.Title>
+                                    <Text>quantity: </Text>
+                                    {item.quantity}
+                                </ListItem.Title>
+                                <ListItem.Title>
+                                    <Text>price: </Text>
+                                    {item.price}
+                                </ListItem.Title>
+                                <ListItem.Title>
+                                <TouchableOpacity onPress={() => this.editItem()}>
+                                        <Text style={styles.buttonText, { color: 'red' }}>Edit</Text>
+                                    </TouchableOpacity>
+                                </ListItem.Title>
+                            </ListItem.Content>
+                        </ListItem>
+                    ))
+                }
+            </View>
+            <View style={styles.buttonView}>
                     <View style={styles.buttons}>
                         <TouchableOpacity>
-                            <Text style={styles.buttonText}>Finish Shopping</Text>
+                            <Text style={styles.buttonText}>Save Cart</Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.space}/>
-                    <View style={styles.buttons}>
-                        <TouchableOpacity>
-                            <Text style={styles.buttonText}>Save/View Receipt</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
+            </View>
             </SafeAreaView>
             </ImageBackground>
-            </div>
-        )
+            
+
+        );
     }
+}
 
 const styles = StyleSheet.create({
     screenContainer: {
@@ -50,10 +109,12 @@ const styles = StyleSheet.create({
       paddingLeft: 20
     },
     buttons:{
-        backgroundColor: 'grey',
+        backgroundColor: '#b48a01',
         fontSize: 200, 
-        height: 80,
-        width: 200
+        height: 60,
+        width: 150,
+        textAlign: 'center',
+
     },
     buttonView:{
         flexDirection: 'row',
@@ -66,10 +127,10 @@ const styles = StyleSheet.create({
 
     },
     buttonText:{
-        fontSize: 25,
-        marginTop: 8,
+        fontSize: 30,
+        marginTop: 4,
         textAlign: 'center',
-        color: "black",
+        color: "blackred",
         // marginLeft: 20
 
     },
