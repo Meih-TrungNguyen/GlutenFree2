@@ -71,7 +71,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.textBoxView}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("NewCart")}
+            onPress={() => navigation.navigate("Setting")}
             title="Go to new cart"
           >
             <AntDesign name="tool" size={70} color="black" />

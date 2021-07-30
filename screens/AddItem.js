@@ -27,9 +27,9 @@ export default class AddItem extends Component {
       consumer: "1",
       quantity: "",
       search: "",
-      glutenSwitch:false,
-      taxSwitch:false,
-      medSwitch:false,
+      glutenSwitch: false,
+      taxSwitch: false,
+      medSwitch: false,
     };
   }
 
@@ -39,32 +39,27 @@ export default class AddItem extends Component {
     this.setState({ search });
   };
 
-
-
   GlutenSwitch = (value) => {
-    if(this.state.glutenSwitch){
-        this.setState({glutenSwitch: false})
+    if (this.state.glutenSwitch) {
+      this.setState({ glutenSwitch: false });
+    } else {
+      this.setState({ glutenSwitch: true });
     }
-    else{
-        this.setState({glutenSwitch: true})
-    }
-  }
+  };
   TaxSwitch = (value) => {
-      if(this.state.taxSwitch){
-          this.setState({taxSwitch: false})
-      }
-      else{
-          this.setState({taxSwitch: true})
-      }
-  }
+    if (this.state.taxSwitch) {
+      this.setState({ taxSwitch: false });
+    } else {
+      this.setState({ taxSwitch: true });
+    }
+  };
   MedSwitch = (value) => {
-      if(this.state.medSwitch){
-          this.setState({medSwitch: false})
-      }
-      else{
-          this.setState({medSwitch: true})
-      }
-  }
+    if (this.state.medSwitch) {
+      this.setState({ medSwitch: false });
+    } else {
+      this.setState({ medSwitch: true });
+    }
+  };
   /**this function validate the ItemName field,
    * it can not be EMPTY, and only contains letters
    */
@@ -88,16 +83,6 @@ export default class AddItem extends Component {
     alert("Added");
     this.counter += 1;
     const { name, price, consumer, quantity } = this.state;
-    console.log(
-      "name: " +
-        name +
-        " price: " +
-        price +
-        " consumer: " +
-        consumer +
-        " quantity: " +
-        quantity
-    );
     const cart = {
       name,
       price,
@@ -174,10 +159,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Gluten Free</Text>
             <View style={styles.switchButton}>
-            <Switch 
+              <Switch
                 onValueChange={this.GlutenSwitch}
                 value={this.state.glutenSwitch}
-                /> 
+              />
             </View>
           </View>
           {/* consumers field */}
@@ -206,10 +191,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Taxable</Text>
             <View style={styles.switchButton}>
-              <Switch 
-                  onValueChange={this.TaxSwitch}
-                  value={this.state.taxSwitch}
-                  /> 
+              <Switch
+                onValueChange={this.TaxSwitch}
+                value={this.state.taxSwitch}
+              />
             </View>
           </View>
 
@@ -217,10 +202,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Medical Expense</Text>
             <View style={styles.switchButton}>
-              <Switch 
-                  onValueChange={this.MedSwitch}
-                  value={this.state.medSwitch}
-              /> 
+              <Switch
+                onValueChange={this.MedSwitch}
+                value={this.state.medSwitch}
+              />
             </View>
           </View>
 

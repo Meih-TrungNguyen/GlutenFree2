@@ -1,24 +1,26 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState } from "react";
 
-import { View, Text, Image, StyleSheet, Button } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import firebase from 'firebase'
-import HomeScreen from './screens/Home';
-import RegisterScreen from './screens/Register';
-import LoginScreen from './screens/Login';
-import LandingScreen from './screens/Landing';
-import NewCart from './screens/NewCart';
-import 'react-native-gesture-handler';
-import splashPic from './assets/GlutenFreeSplash.jpg';
-import AddItem from './screens/AddItem';
-import ViewCart from './screens/ViewCart';
-import History from './screens/History';
-import VerifyEmailScreen from './screens/VerifyEmail.js';
-import RecoverScreen from './screens/PasswordRecover';
-import LinkItem from './screens/LinkItem';
-import Report from './screens/Report';
-
+import { View, Text, Image, StyleSheet, Button } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import firebase from "firebase";
+import HomeScreen from "./screens/Home";
+import RegisterScreen from "./screens/Register";
+import LoginScreen from "./screens/Login";
+import LandingScreen from "./screens/Landing";
+import NewCart from "./screens/NewCart";
+import "react-native-gesture-handler";
+import splashPic from "./assets/GlutenFreeSplash.jpg";
+import AddItem from "./screens/AddItem";
+import ViewCart from "./screens/ViewCart";
+import History from "./screens/History";
+import VerifyEmailScreen from "./screens/VerifyEmail.js";
+import RecoverScreen from "./screens/PasswordRecover";
+import LinkItem from "./screens/LinkItem";
+import Report from "./screens/Report";
+import Setting from "./screens/Setting";
+import EditProfile from "./screens/EditProfile";
+import EditAuth from "./screens/EditAuth";
 
 const Stack = createStackNavigator();
 
@@ -29,7 +31,7 @@ const firebaseConfig = {
   storageBucket: "glutenfree-5acda.appspot.com",
   messagingSenderId: "774957602388",
   appId: "1:774957602388:web:e7f36f10d639d82ed9ffc1",
-  measurementId: "G-MJBL42EQSK"
+  measurementId: "G-MJBL42EQSK",
 };
 
 if (!firebase.apps.length) {
@@ -37,21 +39,22 @@ if (!firebase.apps.length) {
 }
 
 function splashScreen({ navigation }) {
-
   setTimeout(() => {
-    navigation.replace('Landing') //stack name
+    navigation.replace("Landing"); //stack name
   }, 3000);
 
   return (
-
-    <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center' }}>
-      <Image source={require('./assets/GlutenFreeSplash.jpg')} />
+    <View
+      style={{
+        backgroundColor: "yellow",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Image source={require("./assets/GlutenFreeSplash.jpg")} />
     </View>
-  )
-
+  );
 }
-
-
 
 export class App extends Component {
   constructor(props) {
@@ -68,15 +71,15 @@ export class App extends Component {
         this.setState({
           loggedIn: false,
           loaded: true,
-        })
+        });
       } else {
         this.setState({
           loggedIn: true,
           loaded: true,
           emailVerified: firebase.auth().currentUser.emailVerified,
-        })
+        });
       }
-    })
+    });
   }
   render() {
     const { loggedIn, emailVerified } = this.state;
@@ -84,25 +87,33 @@ export class App extends Component {
       return (
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="splash_Screen" component={splashScreen} options={{ headerShown: false, }} />
-            <Stack.Screen name="Landing" component={LandingScreen} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="splash_Screen"
+              component={splashScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Landing"
+              component={LandingScreen}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Forgot Password" component={RecoverScreen} />
           </Stack.Navigator>
         </NavigationContainer>
-      )
+      );
     } else if (loggedIn && !emailVerified) {
       return (
-        <NavigationContainer >
+        <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Verify Email" component={VerifyEmailScreen} />
           </Stack.Navigator>
         </NavigationContainer>
-      )
+      );
     } else {
       return (
-        <NavigationContainer >
+        <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="NewCart" component={NewCart} />
@@ -110,12 +121,16 @@ export class App extends Component {
             <Stack.Screen name="ViewCart" component={ViewCart} />
             <Stack.Screen name="History" component={History} />
             <Stack.Screen name="LinkItem" component={LinkItem} />
+            <Stack.Screen name="Setting" component={Setting} />
             <Stack.Screen name="Report" component={Report} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
+
+            <Stack.Screen name="EditAuth" component={EditAuth} />
           </Stack.Navigator>
         </NavigationContainer>
-      )
+      );
     }
   }
 }
 
-export default App
+export default App;
