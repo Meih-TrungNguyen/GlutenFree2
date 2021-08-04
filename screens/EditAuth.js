@@ -70,6 +70,14 @@ export class EditAuth extends Component {
         user
           .updateEmail(email)
           .then(() => {
+            firebase
+              .database()
+              .ref("User/" + user.uid)
+              .update({
+                email: email,
+              });
+          })
+          .then(() => {
             alert("Email was changed");
           })
           .catch((error) => {

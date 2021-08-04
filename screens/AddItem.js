@@ -82,12 +82,23 @@ export default class AddItem extends Component {
   addItemToCart() {
     alert("Added");
     this.counter += 1;
-    const { name, price, consumer, quantity } = this.state;
+    const {
+      name,
+      price,
+      consumer,
+      quantity,
+      glutenSwitch,
+      taxSwitch,
+      medSwitch,
+    } = this.state;
     const cart = {
       name,
       price,
       consumer,
       quantity,
+      glutenSwitch,
+      taxSwitch,
+      medSwitch,
     };
 
     firebase

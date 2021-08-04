@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -16,23 +16,38 @@ import { format } from "date-fns";
 import { Component } from "react";
 
 require("firebase/firestore");
-
 const Stack = createStackNavigator();
-const CartCounter = 0;
 
-// const newCart = () => {
-//     const Create = JSON.parse( JSON.stringify(format(new Date(),'MM/dd/yyyy') ) )
-//     console.log(Create);
-//     firebase.database().ref('User/'+firebase.auth().currentUser.uid).child('Cart').set(cart)
-//     const cart = {Create}
-//     CartCounter += 1;
-
-// }
 const onLogout = () => {
   firebase.auth().signOut();
 };
 
 const HomeScreen = ({ navigation }) => {
+  const [cartCounter, setCount] = useState(0);
+
+  const newCart = () => {
+    setCount(cartCounter + 1);
+    const createDate = JSON.parse(
+      JSON.stringify(format(new Date(), "MM/dd/yyyy"))
+    );
+    console.log(createDate);
+    const cart = {
+      createDate,
+      cartNumber: cartCounter,
+    };
+    firebase
+      .database()
+      .ref("User/" + firebase.auth().currentUser.uid + "/Cart")
+      .child("Cart" + cartCounter)
+      .set(cart)
+      .then(() => {
+        navigation.navigate("NewCart");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <ImageBackground
       source={require("../assets/Home-screen.jpg")}
@@ -51,10 +66,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.textBoxView}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("NewCart")}
-            title="Go to new cart"
-          >
+          <TouchableOpacity onPress={() => newCart()} title="Go to new cart">
             <AntDesign name="book" size={70} color="black" />
           </TouchableOpacity>
           <Text style={styles.textElement}>History</Text>
