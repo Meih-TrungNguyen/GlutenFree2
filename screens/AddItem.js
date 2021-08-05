@@ -33,8 +33,6 @@ export default class AddItem extends Component {
     };
   }
 
-  counter = 0;
-
   updateSearch = (search) => {
     this.setState({ search });
   };
@@ -76,10 +74,12 @@ export default class AddItem extends Component {
     }
   }
 
+  counter = 0;
   /**this function validate the Enter Item name to be only alphabetic,
    * submmit the input to the database
    */
   addItemToCart() {
+    const { cartNumber } = this.props.route.params;
     alert("Added");
     this.counter += 1;
     const {
@@ -103,8 +103,14 @@ export default class AddItem extends Component {
 
     firebase
       .database()
-      .ref("User/" + firebase.auth().currentUser.uid + "/Product")
-      .child("Product" + this.counter)
+      .ref(
+        "User/" +
+          firebase.auth().currentUser.uid +
+          "/Carts/Cart " +
+          cartNumber +
+          "/Products"
+      )
+      .child("Product " + this.counter)
       .set(cart)
       .catch((error) => {
         console.log(error);

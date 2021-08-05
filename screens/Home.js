@@ -37,8 +37,8 @@ export class HomeScreen extends Component {
 
     firebase
       .database()
-      .ref("User/" + firebase.auth().currentUser.uid + "/Cart")
-      .child("Cart" + cartNumber)
+      .ref("User/" + firebase.auth().currentUser.uid + "/Carts")
+      .child("Cart " + cartNumber)
       .set(cart)
       .then(() => {
         this.props.navigation.navigate("NewCart", { cartCount: cartNumber });
