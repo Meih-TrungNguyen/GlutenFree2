@@ -15,91 +15,105 @@ import firebase from "firebase";
 import { format } from "date-fns";
 import { Component } from "react";
 
-require("firebase/firestore");
-const Stack = createStackNavigator();
-
-const onLogout = () => {
-  firebase.auth().signOut();
-};
-
-const HomeScreen = ({ navigation }) => {
-  const [cartCounter, setCount] = useState(0);
-
-  const newCart = () => {
-    setCount(cartCounter + 1);
-    const createDate = JSON.parse(
-      JSON.stringify(format(new Date(), "MM/dd/yyyy"))
-    );
-    console.log(createDate);
-    const cart = {
-      createDate,
-      cartNumber: cartCounter,
+export class HomeScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      cartNumber: 1,
     };
+  }
+
+  onLogout = () => {
+    firebase.auth().signOut();
+  };
+
+  newCart() {
+    alert("New Cart Created");
+    const { cartNumber } = this.state;
+    const cart = {
+      createDate: JSON.parse(JSON.stringify(format(new Date(), "MM/dd/yyyy"))),
+      cartNumber,
+    };
+
     firebase
       .database()
       .ref("User/" + firebase.auth().currentUser.uid + "/Cart")
-      .child("Cart" + cartCounter)
+      .child("Cart" + cartNumber)
       .set(cart)
       .then(() => {
-        navigation.navigate("NewCart");
+        this.props.navigation.navigate("NewCart", { cartCount: cartNumber });
       })
       .catch((error) => {
         console.log(error);
       });
-  };
+  }
 
-  return (
-    <ImageBackground
-      source={require("../assets/Home-screen.jpg")}
-      style={styles.backgroundImage}
-    >
-      <Text style={styles.topText}>Grocery Shopping</Text>
-      <View style={styles.screenContainer}>
-        <View style={styles.textBoxView}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("NewCart")}
-            title="Go to new cart"
-          >
-            <AntDesign name="shoppingcart" size={70} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.textElement}>New Cart</Text>
-        </View>
+  updateCart() {
+    const { cartNumber } = this.state;
+    this.setState({ cartNumber: cartNumber + 1 });
+    console.log(cartNumber);
+    this.newCart();
+  }
+  render() {
+    return (
+      <ImageBackground
+        source={require("../assets/Home-screen.jpg")}
+        style={styles.backgroundImage}
+      >
+        <Text style={styles.topText}>Grocery Shopping</Text>
+        <View style={styles.screenContainer}>
+          <View style={styles.textBoxView}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("NewCart")}
+              title="Go to new cart"
+            >
+              <AntDesign name="shoppingcart" size={70} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.textElement}>New Cart</Text>
+          </View>
 
-        <View style={styles.textBoxView}>
-          <TouchableOpacity onPress={() => newCart()} title="Go to new cart">
-            <AntDesign name="book" size={70} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.textElement}>History</Text>
-        </View>
+          <View style={styles.textBoxView}>
+            <TouchableOpacity
+              onPress={() => this.updateCart()}
+              title="Go to new cart"
+            >
+              <AntDesign name="book" size={70} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.textElement}>History</Text>
+          </View>
 
-        <View style={styles.textBoxView}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("NewCart")}
-            title="Go to new cart"
-          >
-            <AntDesign name="form" size={70} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.textElement}>Report</Text>
+          <View style={styles.textBoxView}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("NewCart")}
+              title="Go to new cart"
+            >
+              <AntDesign name="form" size={70} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.textElement}>Report</Text>
+          </View>
+          <View style={styles.textBoxView}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("Setting")}
+              title="Go to new cart"
+            >
+              <AntDesign name="tool" size={70} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.textElement}>Settings</Text>
+          </View>
+          <View style={styles.textBoxView}>
+            <TouchableOpacity
+              onPress={() => this.onLogout()}
+              title="Go to new cart"
+            >
+              <AntDesign name="logout" size={70} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.textElement}>Logout</Text>
+          </View>
         </View>
-        <View style={styles.textBoxView}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Setting")}
-            title="Go to new cart"
-          >
-            <AntDesign name="tool" size={70} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.textElement}>Settings</Text>
-        </View>
-        <View style={styles.textBoxView}>
-          <TouchableOpacity onPress={() => onLogout()} title="Go to new cart">
-            <AntDesign name="logout" size={70} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.textElement}>Logout</Text>
-        </View>
-      </View>
-    </ImageBackground>
-  );
-};
+      </ImageBackground>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   screenContainer: {
