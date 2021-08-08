@@ -58,6 +58,7 @@ export default class AddItem extends Component {
       this.setState({ medSwitch: true });
     }
   };
+
   /**this function validate the ItemName field,
    * it can not be EMPTY, and only contains letters
    */
@@ -80,6 +81,7 @@ export default class AddItem extends Component {
    */
   addItemToCart() {
     const { cartNumber } = this.props.route.params;
+
     alert("Added");
     this.counter += 1;
     const {
@@ -126,23 +128,23 @@ export default class AddItem extends Component {
       >
         <View style={styles.screenContainer}>
           <View style={styles.topView}>
-            <View>
+            {/* <View>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate("NewCart")}
                 title="Go NewCart"
               >
                 <AntDesign name="close" size={50} color="darkgreen" />
               </TouchableOpacity>
-            </View>
+            </View> */}
             <Text style={styles.textElement}>Add Items</Text>
-            <View>
+            {/* <View>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate("ViewCart")}
                 title="Go ViewCart"
               >
                 <AntDesign name="shoppingcart" size={50} color="darkgreen" />
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
 
           <SearchBar
@@ -156,6 +158,7 @@ export default class AddItem extends Component {
             <TextInput
               style={styles.textBox}
               placeholder={"Enter Item name"}
+              // value={this.state.name}
               onChangeText={(text) => this.setState({ name: text })}
               onBlur={() => this.nameValidator()}
             />
@@ -168,7 +171,7 @@ export default class AddItem extends Component {
               style={styles.textBox}
               placeholder={"Enter price"}
               keyboardType="numeric"
-              onChangeText={(text) => this.setState({ price: text })}
+              onChangeText={(number) => this.setState({ price: number })}
             />
           </View>
 
@@ -190,7 +193,7 @@ export default class AddItem extends Component {
               placeholder={"Number of consumers"}
               maxLength={1}
               value={this.state.consumer}
-              onChangeText={(text) => this.setState({ consumer: text })}
+              onChangeText={(number) => this.setState({ consumer: number })}
             />
           </View>
           {/* quantity field */}
@@ -200,7 +203,7 @@ export default class AddItem extends Component {
               placeholder={"Quantity"}
               maxLength={2}
               keyboardType="numeric"
-              onChangeText={(text) => this.setState({ quantity: text })}
+              onChangeText={(number) => this.setState({ quantity: number })}
             />
           </View>
 
@@ -230,7 +233,16 @@ export default class AddItem extends Component {
             {/* save button*/}
             <View style={styles.buttons}>
               <TouchableOpacity onPress={() => this.addItemToCart()}>
-                <Text style={styles.textElement}>Save</Text>
+                <Text style={styles.textElement}>Save Item</Text>
+              </TouchableOpacity>
+            </View>
+            {/* save cart button*/}
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("ViewCart")}
+                title="Go ViewCart"
+              >
+                <Text style={styles.textElement}>Go View Cart</Text>
               </TouchableOpacity>
             </View>
             {/* cancel button*/}

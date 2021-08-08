@@ -1,26 +1,28 @@
-import React, { Component, useState } from "react";
 
-import { View, Text, Image, StyleSheet, Button } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import firebase from "firebase";
-import HomeScreen from "./screens/Home";
-import RegisterScreen from "./screens/Register";
-import LoginScreen from "./screens/Login";
-import LandingScreen from "./screens/Landing";
-import NewCart from "./screens/NewCart";
-import "react-native-gesture-handler";
-import splashPic from "./assets/GlutenFreeSplash.jpg";
-import AddItem from "./screens/AddItem";
-import ViewCart from "./screens/ViewCart";
-import History from "./screens/History";
-import VerifyEmailScreen from "./screens/VerifyEmail.js";
-import RecoverScreen from "./screens/PasswordRecover";
-import LinkItem from "./screens/LinkItem";
-import Report from "./screens/Report";
-import Setting from "./screens/Setting";
-import EditProfile from "./screens/EditProfile";
-import EditAuth from "./screens/EditAuth";
+import React, { Component, useState } from 'react';
+
+import { View, Text, Image, StyleSheet, Button } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import firebase from 'firebase'
+import HomeScreen from './screens/Home';
+import RegisterScreen from './screens/Register';
+import LoginScreen from './screens/Login';
+import LandingScreen from './screens/Landing';
+import NewCart from './screens/NewCart';
+import 'react-native-gesture-handler';
+import splashPic from './assets/GlutenFreeSplash.jpg';
+import AddItem from './screens/AddItem';
+import ViewCart from './screens/ViewCart';
+import History from './screens/History';
+import VerifyEmailScreen from './screens/VerifyEmail.js';
+import RecoverScreen from './screens/PasswordRecover';
+import LinkItem from './screens/LinkItem';
+import Report from './screens/Report';
+import EditItem from './screens/EditItem';
+import Setting from './screens/Setting';
+import EditProfile from './screens/EditProfile';
+import EditAuth from './screens/EditAuth';
 
 const Stack = createStackNavigator();
 
@@ -123,8 +125,8 @@ export class App extends Component {
             <Stack.Screen name="LinkItem" component={LinkItem} />
             <Stack.Screen name="Setting" component={Setting} />
             <Stack.Screen name="Report" component={Report} />
+            <Stack.Screen name="EditItem" component={EditItem} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
-
             <Stack.Screen name="EditAuth" component={EditAuth} />
           </Stack.Navigator>
         </NavigationContainer>
