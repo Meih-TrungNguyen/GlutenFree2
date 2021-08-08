@@ -78,7 +78,7 @@ export default class NewCart extends Component {
             </View>
           </SafeAreaView>
 
-          <View style={styles.buttonView}>
+          {/* <View style={styles.buttonView}>
             <View style={styles.buttons}>
               <TouchableOpacity>
                 <Text style={styles.buttonText}>Finish Shopping</Text>
@@ -90,7 +90,7 @@ export default class NewCart extends Component {
                 <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View> */}
         </SafeAreaView>
       </ImageBackground>
     );

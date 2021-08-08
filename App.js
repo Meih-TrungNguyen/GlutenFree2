@@ -18,7 +18,7 @@ import VerifyEmailScreen from './screens/VerifyEmail.js';
 import RecoverScreen from './screens/PasswordRecover';
 import LinkItem from './screens/LinkItem';
 import Report from './screens/Report';
-
+import EditItem from './screens/EditItem';
 
 const Stack = createStackNavigator();
 
@@ -111,6 +111,7 @@ export class App extends Component {
             <Stack.Screen name="History" component={History} />
             <Stack.Screen name="LinkItem" component={LinkItem} />
             <Stack.Screen name="Report" component={Report} />
+            <Stack.Screen name="EditItem" component={EditItem} />
           </Stack.Navigator>
         </NavigationContainer>
       )
