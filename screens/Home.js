@@ -64,7 +64,7 @@ export class HomeScreen extends Component {
         <View style={styles.screenContainer}>
           <View style={styles.textBoxView}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("NewCart")}
+              onPress={() => this.updateCart()}
               title="Go to new cart"
             >
               <AntDesign name="shoppingcart" size={70} color="black" />
@@ -74,7 +74,7 @@ export class HomeScreen extends Component {
 
           <View style={styles.textBoxView}>
             <TouchableOpacity
-              onPress={() => this.updateCart()}
+              onPress={() => this.props.navigation.navigate("History")}
               title="Go to new cart"
             >
               <AntDesign name="book" size={70} color="black" />

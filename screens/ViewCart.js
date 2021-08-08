@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginTop: 4,
         textAlign: 'center',
-        color: "blackred",
+        // color: "blackred",
         // marginLeft: 20
 
     },
