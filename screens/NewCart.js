@@ -20,7 +20,11 @@ import LinkItem from "./LinkItem";
 import ViewCart from "./ViewCart";
 
 export default class NewCart extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
+    const { cartCount } = this.props.route.params;
     return (
       <ImageBackground
         source={require("../assets/Home-screen.jpg")}
@@ -39,7 +43,11 @@ export default class NewCart extends Component {
           <SafeAreaView>
             <View style={styles.textBoxView}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("AddItem")}
+                onPress={() =>
+                  this.props.navigation.navigate("AddItem", {
+                    cartNumber: cartCount,
+                  })
+                }
                 title="Go Add Item"
               >
                 <AntDesign name="pluscircleo" size={50} color="black" />

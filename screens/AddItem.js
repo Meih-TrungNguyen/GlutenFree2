@@ -27,44 +27,37 @@ export default class AddItem extends Component {
       consumer: "1",
       quantity: "",
       search: "",
-      glutenSwitch:false,
-      taxSwitch:false,
-      medSwitch:false,
+      glutenSwitch: false,
+      taxSwitch: false,
+      medSwitch: false,
     };
   }
-
-  counter = 0;
 
   updateSearch = (search) => {
     this.setState({ search });
   };
 
-
-
   GlutenSwitch = (value) => {
-    if(this.state.glutenSwitch){
-        this.setState({glutenSwitch: false})
+    if (this.state.glutenSwitch) {
+      this.setState({ glutenSwitch: false });
+    } else {
+      this.setState({ glutenSwitch: true });
     }
-    else{
-        this.setState({glutenSwitch: true})
-    }
-  }
+  };
   TaxSwitch = (value) => {
-      if(this.state.taxSwitch){
-          this.setState({taxSwitch: false})
-      }
-      else{
-          this.setState({taxSwitch: true})
-      }
-  }
+    if (this.state.taxSwitch) {
+      this.setState({ taxSwitch: false });
+    } else {
+      this.setState({ taxSwitch: true });
+    }
+  };
   MedSwitch = (value) => {
-      if(this.state.medSwitch){
-          this.setState({medSwitch: false})
-      }
-      else{
-          this.setState({medSwitch: true})
-      }
-  }
+    if (this.state.medSwitch) {
+      this.setState({ medSwitch: false });
+    } else {
+      this.setState({ medSwitch: true });
+    }
+  };
 
   /**this function validate the ItemName field,
    * it can not be EMPTY, and only contains letters
@@ -82,35 +75,44 @@ export default class AddItem extends Component {
     }
   }
 
+  counter = 0;
   /**this function validate the Enter Item name to be only alphabetic,
    * submmit the input to the database
    */
   addItemToCart() {
+    const { cartNumber } = this.props.route.params;
 
     alert("Added");
     this.counter += 1;
-    const { name, price, consumer, quantity } = this.state;
-    console.log(
-      "name: " +
-        name +
-        " price: " +
-        price +
-        " consumer: " +
-        consumer +
-        " quantity: " +
-        quantity
-    );
+    const {
+      name,
+      price,
+      consumer,
+      quantity,
+      glutenSwitch,
+      taxSwitch,
+      medSwitch,
+    } = this.state;
     const cart = {
       name,
       price,
       consumer,
       quantity,
+      glutenSwitch,
+      taxSwitch,
+      medSwitch,
     };
 
     firebase
       .database()
-      .ref("User/" + firebase.auth().currentUser.uid + "/Product")
-      .child("Product" + this.counter)
+      .ref(
+        "User/" +
+          firebase.auth().currentUser.uid +
+          "/Carts/Cart " +
+          cartNumber +
+          "/Products"
+      )
+      .child("Product " + this.counter)
       .set(cart)
       .catch((error) => {
         console.log(error);
@@ -177,10 +179,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Gluten Free</Text>
             <View style={styles.switchButton}>
-            <Switch 
+              <Switch
                 onValueChange={this.GlutenSwitch}
                 value={this.state.glutenSwitch}
-                /> 
+              />
             </View>
           </View>
           {/* consumers field */}
@@ -209,10 +211,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Taxable</Text>
             <View style={styles.switchButton}>
-              <Switch 
-                  onValueChange={this.TaxSwitch}
-                  value={this.state.taxSwitch}
-                  /> 
+              <Switch
+                onValueChange={this.TaxSwitch}
+                value={this.state.taxSwitch}
+              />
             </View>
           </View>
 
@@ -220,10 +222,10 @@ export default class AddItem extends Component {
           <View style={styles.switchTextBox}>
             <Text style={styles.font}>Medical Expense</Text>
             <View style={styles.switchButton}>
-              <Switch 
-                  onValueChange={this.MedSwitch}
-                  value={this.state.medSwitch}
-              /> 
+              <Switch
+                onValueChange={this.MedSwitch}
+                value={this.state.medSwitch}
+              />
             </View>
           </View>
 
