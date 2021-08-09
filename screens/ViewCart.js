@@ -74,7 +74,11 @@ export default class ViewCart extends Component{
                                     {item.price}
                                 </ListItem.Title>
                                 <ListItem.Title>
-                                <TouchableOpacity onPress={() => this.editItem()}>
+                                <TouchableOpacity  
+                                    onPress={() => this.editItem()}
+                                    onPress={() => this.props.navigation.navigate("EditItem")}
+
+                                >
                                         <Text style={styles.buttonText, { color: 'red' }}>Edit</Text>
                                     </TouchableOpacity>
                                 </ListItem.Title>
@@ -84,9 +88,10 @@ export default class ViewCart extends Component{
                 }
             </View>
             <View style={styles.buttonView}>
+                                {/* save button*/}
                     <View style={styles.buttons}>
-                        <TouchableOpacity>
-                            <Text style={styles.buttonText}>Save Cart</Text>
+                        <TouchableOpacity onPress={() => this.editItem()}>
+                            <Text style={styles.textElement}>Save Cart</Text>
                         </TouchableOpacity>
                     </View>
             </View>
@@ -108,17 +113,19 @@ const styles = StyleSheet.create({
       paddingTop: 50,
       paddingLeft: 20
     },
-    buttons:{
-        backgroundColor: '#b48a01',
-        fontSize: 200, 
-        height: 60,
-        width: 150,
-        textAlign: 'center',
-
+    buttons: {
+        backgroundColor: "lightgrey",
+        color: "white",
+        fontSize: 200,
+        height: 50,
+        width: 190,
     },
-    buttonView:{
-        flexDirection: 'row',
-        paddingTop: 40,
+    buttonView: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginHorizontal: 10,
+        marginVertical: 10,
+        paddingVertical: 8,
     },
     backgroundImage:{
         flex: 1,
@@ -130,13 +137,18 @@ const styles = StyleSheet.create({
         fontSize: 30,
         marginTop: 4,
         textAlign: 'center',
-        color: "blackred",
+        // color: "blackred",
         // marginLeft: 20
 
     },
     space: {
         width: 20, 
         height: 10,
-      },
+    },
+    textElement: {
+        fontSize: 25,
+        marginTop: 8,
+        textAlign: "center",
+    },
 
 })
