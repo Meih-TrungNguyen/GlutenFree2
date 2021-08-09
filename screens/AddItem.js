@@ -2,9 +2,22 @@ import React, { Component } from "react";
 import { SearchBar } from "react-native-elements";
 import firebase from "firebase";
 
-import {KeyboardAvoidingView, Text, Platform, 
-  TouchableWithoutFeedback, Button, Keyboard  , View,  TouchableOpacity,  StatusBar,
-  TextInput,  Switch,  ImageBackground,  StyleSheet, ScrollView} from "react-native";
+import {
+  KeyboardAvoidingView,
+  Text,
+  Platform,
+  TouchableWithoutFeedback,
+  Button,
+  Keyboard,
+  View,
+  TouchableOpacity,
+  StatusBar,
+  TextInput,
+  Switch,
+  ImageBackground,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import {
   Ionicons,
   AntDesign,
@@ -101,7 +114,7 @@ export default class AddItem extends Component {
       taxSwitch,
       medSwitch,
     };
-    this.props.navigation.navigate("NewCart")
+    this.props.navigation.navigate("NewCart");
 
     firebase
       .database()
@@ -139,13 +152,13 @@ export default class AddItem extends Component {
     const { search } = this.state;
     return (
       <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-    >
-      <ImageBackground
-        source={require("../assets/Home-screen.jpg")}
-        style={styles.backgroundImage}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
       >
+        <ImageBackground
+          source={require("../assets/Home-screen.jpg")}
+          style={styles.backgroundImage}
+        >
           <View style={styles.topView}>
             <View>
               <TouchableOpacity
@@ -170,99 +183,112 @@ export default class AddItem extends Component {
             onChangeText={this.updateSearch}
             value={search}
           />
-    <ScrollView style={styles.scrollView}>
-        <View style={styles.inner}>
-        <TextInput
-              style={styles.textInput}
-              placeholder={"Enter Item name"}
-              placeholderTextColor='black'
-              onChangeText={(text) => this.setState({ name: text })}
-              onBlur={() => this.nameValidator()}
-            />
-          <TextInput
-              style={styles.textInput}
-              placeholder={"Enter price"}
-              placeholderTextColor='black'
-              keyboardType="numeric"
-              onChangeText={(text) => this.setState({ price: text })}
-            />
-          <View style={styles.switchTextBox}>
-            <Text style={styles.font}>Gluten Free</Text>
-            <View style={styles.switchButton}>
-              <Switch
-                onValueChange={this.GlutenSwitch}
-                value={this.state.glutenSwitch}
+          <ScrollView style={styles.scrollView}>
+            {/* item name field */}
+            <View style={styles.inner}>
+              <TextInput
+                style={styles.textInput}
+                placeholder={"Enter Item name"}
+                placeholderTextColor="black"
+                onChangeText={(text) => this.setState({ name: text })}
+                onBlur={() => this.nameValidator()}
               />
-            </View>
-          </View>
-            <TextInput
-              style={styles.textInput}
-              keyboardType="numeric"
-              placeholder={"Number of consumers"}
-              placeholderTextColor='black'
-              maxLength={1}
-              value={this.state.consumer}
-              onChangeText={(text) => this.setState({ consumer: text })}
-            />
-            <TextInput
-              style={styles.textInput}
-              placeholder={"Quantity"}
-              placeholderTextColor='black'
-              maxLength={2}
-              keyboardType="numeric"
-              onChangeText={(text) => this.setState({ quantity: text })}
-            />
-          <View style={styles.switchTextBox}>
-            <Text style={styles.font}>Taxable</Text>
-            <View style={styles.switchButton}>
-              <Switch
-                onValueChange={this.TaxSwitch}
-                value={this.state.taxSwitch}
+              {/* price field */}
+              <TextInput
+                style={styles.textInput}
+                placeholder={"Enter price"}
+                placeholderTextColor="black"
+                keyboardType="numeric"
+                onChangeText={(text) => this.setState({ price: text })}
               />
-            </View>
-          </View>        
-          <View style={styles.switchTextBox}>
-            <Text style={styles.font}>Medical Expense</Text>
-            <View style={styles.switchButton}>
-              <Switch
-                onValueChange={this.MedSwitch}
-                value={this.state.medSwitch}
-              />
-          </View>
-          </View>
-
-          
-          <View style={styles.buttonView}>
-              {/* save button*/}
-              <View style={styles.btnContainer}>
-                <TouchableOpacity onPress={() => this.addItemToCart()}>
-                  <Text style={styles.textElement}>Save</Text>
-                </TouchableOpacity>
+              <View style={styles.switchTextBox}>
+                {/* switch glutten free*/}
+                <Text style={styles.font}>Gluten Free</Text>
+                <View style={styles.switchButton}>
+                  <Switch
+                    onValueChange={this.GlutenSwitch}
+                    value={this.state.glutenSwitch}
+                  />
+                </View>
               </View>
-              {/* cancel button*/}
-              <View style={styles.btnContainer}>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate("NewCart")}
-                  title="Go NewCart"
-                >
-                  <Text style={styles.textElement}>Cancel</Text>
-                </TouchableOpacity>
-          </View>
-          </View>
-        </View>
-      
-      </ScrollView>
-      </ImageBackground>
-    </KeyboardAvoidingView>
+              {/* consumers field */}
+              <TextInput
+                style={styles.textInput}
+                keyboardType="numeric"
+                placeholder={"Number of consumers"}
+                placeholderTextColor="black"
+                maxLength={1}
+                value={this.state.consumer}
+                onChangeText={(text) => this.setState({ consumer: text })}
+              />
+              {/* quantity field */}
+              <TextInput
+                style={styles.textInput}
+                placeholder={"Quantity"}
+                placeholderTextColor="black"
+                maxLength={2}
+                keyboardType="numeric"
+                onChangeText={(text) => this.setState({ quantity: text })}
+              />
+              <View style={styles.switchTextBox}>
+                {/* switch taxable*/}
+                <Text style={styles.font}>Taxable</Text>
+                <View style={styles.switchButton}>
+                  <Switch
+                    onValueChange={this.TaxSwitch}
+                    value={this.state.taxSwitch}
+                  />
+                </View>
+              </View>
+              <View style={styles.switchTextBox}>
+                {/* switch Medical Expenses*/}
+                <Text style={styles.font}>Medical Expense</Text>
+                <View style={styles.switchButton}>
+                  <Switch
+                    onValueChange={this.MedSwitch}
+                    value={this.state.medSwitch}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.buttonView}>
+                {/* save button*/}
+                <View style={styles.btnContainer}>
+                  <TouchableOpacity onPress={() => this.addItemToCart()}>
+                    <Text style={styles.textElement}>Save</Text>
+                  </TouchableOpacity>
+                </View>
+                {/* save cart button*/}
+                <View style={styles.btnContainer}>
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate("ViewCart")}
+                    title="Go ViewCart"
+                  >
+                    <Text style={styles.textElement}>Go View Cart</Text>
+                  </TouchableOpacity>
+                </View>
+                {/* cancel button*/}
+                <View style={styles.btnContainer}>
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.navigate("NewCart")}
+                    title="Go NewCart"
+                  >
+                    <Text style={styles.textElement}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </ScrollView>
+        </ImageBackground>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-
   scrollView: {
     marginHorizontal: 20,
-  },  
+  },
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
@@ -275,21 +301,20 @@ const styles = StyleSheet.create({
   inner: {
     padding: 24,
     flex: 1,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   header: {
     fontSize: 36,
-    marginBottom: 48
+    marginBottom: 48,
   },
   font: {
     fontSize: 25,
     justifyContent: "flex-start",
-    
   },
   textInput: {
     height: 50,
     borderColor: "#000000",
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomWidth: 1,
     marginBottom: 40,
     shadowColor: "#000",
@@ -301,7 +326,7 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
     marginTop: 12,
     width: 150,
-    height: 50
+    height: 50,
   },
   buttonView: {
     flexDirection: "row",
@@ -314,7 +339,7 @@ const styles = StyleSheet.create({
   switchTextBox: {
     height: 50,
     borderColor: "#000000",
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderBottomWidth: 1,
     marginBottom: 40,
     flexDirection: "row",
@@ -325,7 +350,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 3, height: 4 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
-  },  
+  },
   textElement: {
     fontSize: 25,
     marginTop: 8,
@@ -337,4 +362,4 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 10,
   },
-})
+});
