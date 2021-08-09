@@ -4,7 +4,9 @@ import { Text, View, TouchableOpacity, SafeAreaView, StyleSheet, ImageBackground
 import { ListItem, Icon } from 'react-native-elements';
 
 import {Ionicons, AntDesign, Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
-
+/**Class Edit Item responsible to update item
+ * from the Cart
+ */
 export default class ViewCart extends Component{
 
     constructor(props) {
