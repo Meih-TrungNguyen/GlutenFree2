@@ -75,13 +75,14 @@ export default class AddItem extends Component {
   }
 
   counter = 0;
+  total = 0;
+
   /**this function validate the Enter Item name to be only alphabetic,
    * submmit the input to the database
    */
   addItemToCart() {
     const { cartNumber } = this.props.route.params;
     alert("Added");
-    this.counter += 1;
     const {
       name,
       price,
@@ -90,7 +91,10 @@ export default class AddItem extends Component {
       glutenSwitch,
       taxSwitch,
       medSwitch,
+      total,
     } = this.state;
+    this.counter += 1;
+    this.total += price * quantity;
     const cart = {
       name,
       price,
@@ -112,6 +116,22 @@ export default class AddItem extends Component {
       )
       .child("Product " + this.counter)
       .set(cart)
+      .then(() => {
+        firebase
+          .database()
+          .ref(
+            "User/" +
+              firebase.auth().currentUser.uid +
+              "/Carts/Cart" +
+              cartNumber
+          )
+          .update({
+            total: total,
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
       .catch((error) => {
         console.log(error);
       });

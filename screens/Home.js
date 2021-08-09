@@ -20,6 +20,7 @@ export class HomeScreen extends Component {
     super(props);
     this.state = {
       cartNumber: 1,
+      total: 0,
     };
   }
 
@@ -28,11 +29,11 @@ export class HomeScreen extends Component {
   };
 
   newCart() {
-    alert("New Cart Created");
-    const { cartNumber } = this.state;
+    const { cartNumber, total } = this.state;
     const cart = {
       createDate: JSON.parse(JSON.stringify(format(new Date(), "MM/dd/yyyy"))),
       cartNumber,
+      total,
     };
 
     firebase
@@ -64,7 +65,7 @@ export class HomeScreen extends Component {
         <View style={styles.screenContainer}>
           <View style={styles.textBoxView}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("NewCart")}
+              onPress={() => this.updateCart()}
               title="Go to new cart"
             >
               <AntDesign name="shoppingcart" size={70} color="black" />
@@ -74,7 +75,7 @@ export class HomeScreen extends Component {
 
           <View style={styles.textBoxView}>
             <TouchableOpacity
-              onPress={() => this.updateCart()}
+              onPress={() => this.props.navigation.navigate("History")}
               title="Go to new cart"
             >
               <AntDesign name="book" size={70} color="black" />
