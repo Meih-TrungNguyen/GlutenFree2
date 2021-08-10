@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { SearchBar } from "react-native-elements";
 import {
   Text,
   View,
@@ -8,49 +7,43 @@ import {
   StyleSheet,
   ImageBackground,
 } from "react-native";
+import firebase from "firebase";
 import { ListItem, Icon } from "react-native-elements";
 
-import {
-  Ionicons,
-  AntDesign,
-  Entypo,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-
-export default class ViewCart extends Component {
+export default class History extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: " ",
-      price: " ",
-      quantity: "",
-      icon: "",
+      list: [],
     };
   }
 
-  editItem() {}
+  componentDidMount() {
+    const { list } = this.state;
+    const ref = firebase
+      .database()
+      .ref("User/" + firebase.auth().currentUser.uid);
+    ref.once("value", (snap) => {
+      for (let i = 1; i <= snap.val().cart; i++) {
+        const ref2 = firebase
+          .database()
+          .ref("User/" + firebase.auth().currentUser.uid + "/Carts/Cart " + i);
+        ref2.once("value", (snap2) => {
+          list.push({
+            Date: snap2.val().createDate,
+            price: snap2.val().total,
+          });
+          this.setState({ list: list });
+        });
+      }
+      console.log(list);
+    });
+  }
 
   render() {
-    const list = [
-      {
-        Date: "2021/05/06",
-        price: "$3",
-      },
-      {
-        Date: "2021/05/06",
-        price: "$3",
-      },
-      {
-        Date: "2021/05/06",
-        price: "$3",
-      },
-      {
-        Date: "2021/05/06",
-        price: "$3",
-      },
-    ];
-
+    const { list } = this.state;
+    console.log(list);
     return (
       <ImageBackground
         source={require("../assets/Home-screen.jpg")}
@@ -87,8 +80,6 @@ export default class ViewCart extends Component {
             </ListItem>
           ))}
         </View>
-
-        {/* </SafeAreaView> */}
       </ImageBackground>
     );
   }

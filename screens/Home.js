@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { Component } from "react";
 import {
   Text,
   View,
-  TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Ionicons, AntDesign, Fontisto, Octicons } from "@expo/vector-icons";
-import NewCart from "./NewCart";
+import { AntDesign } from "@expo/vector-icons";
 import firebase from "firebase";
 import { format } from "date-fns";
-import { Component } from "react";
-
 export class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -25,18 +19,16 @@ export class HomeScreen extends Component {
   onLogout = () => {
     firebase.auth().signOut();
   };
-  nextCartNum = 0;
+
   cartNumber = 0;
 
   addCart() {
     const { total } = this.state;
-
     const ref = firebase
       .database()
       .ref("User/" + firebase.auth().currentUser.uid);
     ref.once("value", (snap) => {
       this.cartNumber = snap.val().cart + 1;
-      console.log("nextCartNum" + this.cartNumber);
       firebase
         .database()
         .ref("User/" + firebase.auth().currentUser.uid)
@@ -50,7 +42,6 @@ export class HomeScreen extends Component {
             ),
             total,
           };
-          console.log(this.cartNumber);
           firebase
             .database()
             .ref("User/" + firebase.auth().currentUser.uid + "/Carts")
@@ -180,4 +171,5 @@ const styles = StyleSheet.create({
     color: "black",
   },
 });
+
 export default HomeScreen;

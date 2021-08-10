@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   View,
-  Button,
   Picker,
   TextInput,
   StyleSheet,
@@ -9,11 +8,9 @@ import {
   Text,
   ImageBackground,
 } from "react-native";
-// import { Picker } from "@react-native-picker/picker";
 import firebase from "firebase";
 import { validateAll } from "indicative/validator";
 import "firebase/firestore";
-import { style } from "@material-ui/system";
 
 export class Register extends Component {
   constructor(props) {
