@@ -19,42 +19,58 @@ export class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cartNumber: 1,
       total: 0,
     };
   }
-
   onLogout = () => {
     firebase.auth().signOut();
   };
+  nextCartNum = 0;
+  cartNumber = 0;
 
-  newCart() {
-    const { cartNumber, total } = this.state;
-    const cart = {
-      createDate: JSON.parse(JSON.stringify(format(new Date(), "MM/dd/yyyy"))),
-      cartNumber,
-      total,
-    };
+  addCart() {
+    const { total } = this.state;
 
-    firebase
+    const ref = firebase
       .database()
-      .ref("User/" + firebase.auth().currentUser.uid + "/Carts")
-      .child("Cart " + cartNumber)
-      .set(cart)
-      .then(() => {
-        this.props.navigation.navigate("NewCart", { cartCount: cartNumber });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      .ref("User/" + firebase.auth().currentUser.uid);
+    ref.once("value", (snap) => {
+      this.cartNumber = snap.val().cart + 1;
+      console.log("nextCartNum" + this.cartNumber);
+      firebase
+        .database()
+        .ref("User/" + firebase.auth().currentUser.uid)
+        .update({
+          cart: this.cartNumber,
+        })
+        .then(() => {
+          const cart = {
+            createDate: JSON.parse(
+              JSON.stringify(format(new Date(), "MM/dd/yyyy"))
+            ),
+            total,
+          };
+          console.log(this.cartNumber);
+          firebase
+            .database()
+            .ref("User/" + firebase.auth().currentUser.uid + "/Carts")
+            .child("Cart " + this.cartNumber)
+            .set(cart)
+            .then(() => {
+              this.props.navigation.navigate("NewCart", {
+                cartCount: this.cartNumber,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   }
 
-  updateCart() {
-    const { cartNumber } = this.state;
-    this.setState({ cartNumber: cartNumber + 1 });
-    console.log(cartNumber);
-    this.newCart();
-  }
   render() {
     return (
       <ImageBackground
@@ -65,7 +81,7 @@ export class HomeScreen extends Component {
         <View style={styles.screenContainer}>
           <View style={styles.textBoxView}>
             <TouchableOpacity
-              onPress={() => this.updateCart()}
+              onPress={() => this.addCart()}
               title="Go to new cart"
             >
               <AntDesign name="shoppingcart" size={70} color="black" />

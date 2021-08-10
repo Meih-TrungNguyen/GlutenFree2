@@ -1,5 +1,7 @@
 import React from "react";
 import { Component } from "react";
+import firebase from "firebase";
+
 import {
   Text,
   View,
@@ -23,6 +25,17 @@ export default class NewCart extends Component {
   constructor(props) {
     super(props);
   }
+
+  print() {
+    const ref = firebase
+      .database()
+      .ref("User/" + firebase.auth().currentUser.uid + "/Carts");
+
+    ref.on("value", (snap) => {
+      console.log(snap.val());
+    });
+  }
+
   render() {
     const { cartCount } = this.props.route.params;
     return (
@@ -32,7 +45,7 @@ export default class NewCart extends Component {
       >
         <View style={styles.textBoxView}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Home")}
+            onPress={() => this.print()} //this.props.navigation.navigate("Home")}
             title="Go Home"
           >
             <AntDesign name="home" size={50} color="black" />
