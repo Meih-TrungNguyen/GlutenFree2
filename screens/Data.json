@@ -1,0 +1,265 @@
+{
+  "User" : {
+    "1JXhwALcqNRxvSJ0WZThoQlfYOj1" : {
+      "Product" : {
+        "Product1" : {
+          "consumer" : "1",
+          "name" : "apple",
+          "price" : "1",
+          "quantity" : "1"
+        },
+        "Product2" : {
+          "consumer" : "1",
+          "name" : "pie",
+          "price" : "1",
+          "quantity" : "1"
+        }
+      },
+      "city" : "Barrie",
+      "email" : "happycook125@gmail.com",
+      "firstname" : "NGOC",
+      "lastname" : "NGUYEN",
+      "province" : "British Columbia"
+    },
+    "4dyRAdOK8tXQBToQ0Wm3IqFFIPw1" : {
+      "Product" : {
+        "Product1" : {
+          "consumer" : "1",
+          "name" : "test",
+          "price" : "11",
+          "quantity" : "1"
+        }
+      }
+    },
+    "IIZbeMiSokPGmluLEtM6PW9ehF62" : {
+      "Carts" : {
+        "Cart 1" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 2" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 3" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 4" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 5" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 6" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 7" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 8" : {
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 9" : {
+          "createDate" : "08/10/2021",
+          "total" : 999
+        }
+      },
+      "cart" : 9,
+      "city" : "null",
+      "email" : "trungnguyenngc125@gmail.com",
+      "firstname" : "TRUNG",
+      "lastname" : "NGUYEN",
+      "province" : "null"
+    },
+    "P7Sbrr6N3eTmB8MCXVpQBej7PF52" : {
+      "Carts" : {
+        "Cart 1" : {
+          "cartNumber" : 1,
+          "createDate" : "08/08/2021"
+        },
+        "Cart 2" : {
+          "cartNumber" : 2,
+          "createDate" : "08/08/2021"
+        },
+        "Cart 3" : {
+          "cartNumber" : 3,
+          "createDate" : "08/08/2021"
+        },
+        "Cart 4" : {
+          "cartNumber" : 4,
+          "createDate" : "08/08/2021"
+        }
+      },
+      "Product" : {
+        "Product1" : {
+          "consumer" : "1",
+          "name" : "newitem",
+          "price" : "123",
+          "quantity" : ""
+        }
+      }
+    },
+    "R6936ugY4vRSBxuO1fMTmcINRps2" : {
+      "city" : "Barrie ",
+      "email" : "lareve1011@britted.com",
+      "firstname" : "test",
+      "lastname" : "test",
+      "province" : "Alberta"
+    },
+    "hGcdrlKUzldHL9iQjH8j1NG2rj52" : {
+      "Carts" : {
+        "Cart 1" : {
+          "cartNumber" : 1,
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 2" : {
+          "cartNumber" : 2,
+          "createDate" : "08/10/2021",
+          "total" : 0
+        },
+        "Cart 3" : {
+          "cartNumber" : 3,
+          "createDate" : "08/08/2021"
+        }
+      },
+      "Product" : {
+        "Product1" : {
+          "consumer" : "1",
+          "name" : "",
+          "price" : "",
+          "quantity" : ""
+        },
+        "Product2" : {
+          "consumer" : "1",
+          "name" : "rtrtrtr",
+          "price" : "44",
+          "quantity" : "4"
+        },
+        "Product3" : {
+          "consumer" : "1",
+          "name" : "rtrtrtr",
+          "price" : "44",
+          "quantity" : "4"
+        },
+        "Product4" : {
+          "consumer" : "1",
+          "name" : "rtrtrtr",
+          "price" : "44",
+          "quantity" : "4"
+        },
+        "Product5" : {
+          "consumer" : "1",
+          "name" : "rtrtrtr",
+          "price" : "44",
+          "quantity" : "4"
+        },
+        "Product6" : {
+          "consumer" : "1",
+          "name" : "rtrtrtr",
+          "price" : "44",
+          "quantity" : "4"
+        },
+        "Product7" : {
+          "consumer" : "1",
+          "name" : "eee",
+          "price" : "54",
+          "quantity" : "2"
+        },
+        "Product8" : {
+          "consumer" : "1",
+          "name" : "eee",
+          "price" : "54",
+          "quantity" : "2"
+        },
+        "Product9" : {
+          "consumer" : "1",
+          "name" : "ww",
+          "price" : "33",
+          "quantity" : "8"
+        }
+      }
+    },
+    "kUQDkOkRHyWJSwxRb52UApHrCg03" : {
+      "Product" : {
+        "Product1" : {
+          "consumer" : "1",
+          "name" : "sdaf",
+          "price" : "asdf",
+          "quantity" : "2"
+        },
+        "Product2" : {
+          "consumer" : "1",
+          "name" : "sdaf",
+          "price" : "12",
+          "quantity" : "2"
+        },
+        "Product3" : {
+          "consumer" : "1",
+          "name" : "sdaf",
+          "price" : "12",
+          "quantity" : "2"
+        },
+        "Product4" : {
+          "consumer" : "1",
+          "name" : "sdaf",
+          "price" : "12",
+          "quantity" : "2"
+        },
+        "Product5" : {
+          "consumer" : "1",
+          "name" : "sdaf",
+          "price" : "12",
+          "quantity" : "2"
+        },
+        "Product6" : {
+          "consumer" : "1",
+          "name" : "sdaf",
+          "price" : "12",
+          "quantity" : "2"
+        }
+      },
+      "city" : "Brampton",
+      "email" : "kentopping24@gmail.com",
+      "firstname" : "fasdf",
+      "lastname" : "asdf",
+      "province" : "Manitoba"
+    },
+    "w1yNVHMqArOKlL5aFk5nZ34dH8K2" : {
+      "Carts" : {
+        "Cart 1" : {
+          "cartNumber" : 1,
+          "createDate" : "08/09/2021",
+          "total" : 0
+        },
+        "Cart 2" : {
+          "cartNumber" : 2,
+          "createDate" : "08/09/2021",
+          "total" : 0
+        },
+        "Cart 3" : {
+          "cartNumber" : 3,
+          "createDate" : "08/09/2021",
+          "total" : 0
+        },
+        "Cart 4" : {
+          "cartNumber" : 4,
+          "createDate" : "08/09/2021",
+          "total" : 0
+        }
+      },
+      "carts" : 1,
+      "city" : "null",
+      "email" : "trungnguyenngc125@gmail.com",
+      "firstname" : "",
+      "lastname" : "",
+      "province" : "null"
+    }
+  }
+}

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState  } from 'react';
 import { Text, View, TextInput, Button, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native'
 import { Component } from 'react';
 import { Ionicons, AntDesign, Fontisto, Octicons } from "@expo/vector-icons"
+import { ListItem, Icon, Image } from 'react-native-elements';
+import firebase from "firebase";
 import img1 from './images/image1.jpg';
 import img2 from './images/image2.jpg';
 import img3 from './images/image3.jpg';
@@ -12,39 +14,68 @@ import img6 from './images/image6.jpg';
 export default class LinkItem extends Component {
   constructor(props) {
     super(props);
+    this.toggleSortLinked = this.toggleSortLinked.bind(this)
     this.state = {
       products: [
         {
           id: '',
           name: '',
           price: '',
-          image: ''
+          image: '',
+          glutenFree: '',
         }
       ],
       quantity: 0
     };
   }
+
+  counter = 0;
+  total = 0;
+
+  sortByGlutenFree(){
+    const {products} = this.state
+    let newList = products
+    if(this.state.glutenFree){
+      newList = products.sort((a,b) => a.id > b.id  ) 
+    }else{
+      newList = products.sort((a,b) => a.id < b.id ) 
+    }
+    this.setState({
+      glutenFree: !this.state.glutenFree,
+      products: newList
+    })
+  }
+
+  toggleSortLinked(event){
+    this.sortByGlutenFree()
+  }
+
   onAdd = (product) => {
     console.log(product);
     this.setState({ quantity: this.state.quantity + 1 })
-  };
+  }
+
+  addItemToCart() {
+    alert("Added");
+    this.counter += 1;
+    const { id, name, price, quantity, glutenFree } = this.state;
+    const cart = {
+      id,
+      name,
+      price,
+      quantity,
+      glutenFree
+    };
+
+  }
+
 
   doAdd = () => {
     this.onAdd({ id: product.id })
+
   };
 
-  onDelete = (productId) => {
-    console.log(productId)
-    if (this.state.quantity >= 1) {
-      this.setState({ quantity: this.state.quantity - 1 })
-    } else {
-      this.setState({ quantity: 0 })
-    }
-  };
 
-  doDelete = () => {
-    this.onDelete({ id: product.id })
-  };
 
   getBadgeClasses() {
     let classes = "badge m-2 badge-";
@@ -58,6 +89,50 @@ export default class LinkItem extends Component {
   };
 
   render() {
+    const list = [
+      { 
+        id: '0',
+        name: 'Made Good Granola Bars',
+        price: '4.99',
+        image: './images/image1.jpg',
+        glutenFree: 'Yes'
+      },
+      {
+        id: '1',
+        name: 'Bread',
+        price: '6.99',
+        image: img2,
+        glutenFree: 'Yes'
+      },
+      {
+        id: '2',
+        name: 'Bens Original Ready Rice',
+        price: '7.99',
+        image: img3,
+        glutenFree: 'Yes'
+      },
+      {
+        id: '3',
+        name: 'DIGIORNO RISING CRUST',
+        price: '10.99',
+        image: img4,
+        glutenFree: 'No'
+      },
+      {
+        id: '4',
+        name: 'Budweiser (dozen)',
+        price: '23.88',
+        image: img5,
+        glutenFree: 'No'
+      },
+      {
+        id: '5',
+        name: 'Quaker Instant Oatmeal',
+        price: '5.99',
+        image: img6,
+        glutenFree: 'No'
+      },
+  ]
     return (
 
       <ImageBackground source={require('../assets/Home-screen.jpg')} style={styles.backgroundImage}>
@@ -75,113 +150,41 @@ export default class LinkItem extends Component {
           <View style={styles.topViewRight}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate("ViewCart")} title="Go to ViewCart">
               <AntDesign name="shoppingcart" size={50} color="darkgreen" />
-              <span className={this.getBadgeClasses()}>{this.formatQuantity()}</span>
             </TouchableOpacity>
             <View style={styles.button}>
-              <button className="sort">Sort</button>
+              <button onClick={this.toggleSortLinked}>Sort</button>
             </View>
           </View>
         </View>
 
-        <View style={styles.textElement}>
-          <View style={styles.product}>
-          <Text style={styles.itemText}>Made Good Granola Bars</Text>
-          <Text style={styles.itemText}>$ 4.99</Text>
-          <View style={styles.image}>
-            <img src={img1} />
-          </View>
-          <View style={styles.TouchButton}>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 1 })} name="plus" size={35} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 1 })} name="minus" size={35} color="black" />
-            </TouchableOpacity>
-          </View>
-          </View>
-
-          <View style={styles.product}>
-          <Text style={styles.itemText}>Bread</Text>
-          <Text style={styles.itemText}>$ 6.99</Text>
-          <View style={styles.image}>
-            <img src={img2} />
-          </View>
-          <View style={styles.TouchButton}>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 2 })} name="plus" size={35} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 2 })} name="minus" size={35} color="black" />
-            </TouchableOpacity>
-          </View>
-          </View>
-
-          <View style={styles.product}>
-          <Text style={styles.itemText}>Bens Original Ready Rice</Text>
-          <Text style={styles.itemText}>$ 7.99</Text>
-          <View style={styles.image}>
-            <img src={img3} />
-          </View>
-          <View style={styles.TouchButton}>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 3 })} name="plus" size={35} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 3 })} name="minus" size={35} color="black" />
-            </TouchableOpacity>
-          </View>
-          </View>
-        </View>
-
-        <View style={styles.textElement}>
-          <View style={styles.product}>
-          <Text style={styles.itemText}>DIGIORNO RISING CRUST</Text>
-          <Text style={styles.itemText}>$ 10.99</Text>
-          <View style={styles.image}>
-            <img src={img4} />
-          </View>
-          <View style={styles.TouchButton}>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 4 })} name="plus" size={35} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 4 })} name="minus" size={35} color="black" />
-            </TouchableOpacity>
-          </View>
-          </View>
-
-          <View style={styles.product}>
-          <Text style={styles.itemText}>Budweiser (dozen)</Text>
-          <Text style={styles.itemText}>$ 23.88</Text>
-          <View style={styles.image}>
-            <img src={img5} />
-          </View>
-          <View style={styles.TouchButton}>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 5 })} name="plus" size={35} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 5 })} name="minus" size={35} color="black" />
-            </TouchableOpacity>
-          </View>
-          </View>
-
-          <View style={styles.product}>
-          <Text style={styles.itemText}>Quaker Instant Oatmeal</Text>
-          <Text style={styles.itemText}>$ 5.99</Text>
-          <View style={styles.image}>
-            <img src={img6} />
-          </View>
-          <View style={styles.TouchButton}>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onAdd({ id: 6 })} name="plus" size={35} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity title="button">
-              <AntDesign onClick={() => this.onDelete({ id: 6 })} name="minus" size={35} color="black" />
-            </TouchableOpacity>
-          </View>
-          </View>
-        </View>
+       <View>
+       {
+                    list.map((item, i) => (
+                        <ListItem key={i} bottomDivider>
+                            <Image name={item.image} />
+                            <ListItem.Content>
+                                <ListItem.Title>
+                                    <Text>name: </Text>
+                                    {item.name}
+                                </ListItem.Title>
+                                <ListItem.Title>
+                                    <Text>glutenFree:  </Text>
+                                    {item.glutenFree}
+                                </ListItem.Title>
+                                <ListItem.Title>
+                                    <Text>price: $ </Text>
+                                    {item.price}
+                                </ListItem.Title>
+                                <ListItem.Title>
+                                <TouchableOpacity onPress={() => this.addItemToCart()}>
+                                    <Text style={styles.textElement} size={5}>Add to Cart</Text>
+                                  </TouchableOpacity>
+                                </ListItem.Title>
+                            </ListItem.Content>
+                        </ListItem>
+                    ))
+                }
+       </View>
 
 
         </View>

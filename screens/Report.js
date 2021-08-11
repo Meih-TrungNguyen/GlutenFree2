@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { CSVLink } from "react-csv";
+import './Data.json';
 import {
   Text,
   View,
@@ -15,26 +16,25 @@ class Report extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
         }
 
         this.csvLinktEl = React.createRef();
 
         this.headers = [
+            { label: 'Id', key: 'id' },
             { label: 'Name', key: 'name' },
-            { label: 'Username', key: 'username' },
             { label: 'Email', key: 'email' },
-            { label: 'Phone', key: 'phone' },
-            { label: 'Website', key: 'website' }
         ]
     }
+
     getUserList = () => {
         return fetch('https://jsonplaceholder.typicode.com/users').then(res => res.json());
     }
 
     downloadReport = async () => {
         const data = await this.getUserList();
-        this.setState({ data: data }, () => {
+        this.setState({ data: data}, () => {
             setTimeout(() => {
                 this.csvLinktEl.current.link.click();
             });
@@ -43,7 +43,7 @@ class Report extends Component {
 
 
     render() {
-        const { data } = this.state;
+        const { data} = this.state;
         return (
 
                 <ImageBackground
@@ -59,21 +59,14 @@ class Report extends Component {
                         </TouchableOpacity> 
 
                     </View> 
-                    
-                    <View style={styles.space} />
 
-                    <View style={styles.buttons}> 
-                        <TouchableOpacity >
-                            <Text style={styles.textElement}>Export to Excel</Text>
-                        </TouchableOpacity>
-                    </View>
 
                     <CSVLink
                         headers={this.headers}
                         data={data}
-                        filename="Report_test.csv"
-                        ref={this.csvLinktEl}>
-                    </CSVLink>
+                        filename="Product_Report.csv"
+                        ref={this.csvLinktEl}
+                    />
                 </View>    
 
                 </ImageBackground>
