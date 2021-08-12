@@ -3,7 +3,7 @@ import screens from '../App';
 import {render}from '@testing-library/react-native';
 import { it } from '@jest/globals';
 
-it('start upload action will combine upload\'s watting queue and failed queue then update upload\'s uploading state', () => {
+Test('start upload action will combine upload\'s watting queue and failed queue then update upload\'s uploading state', () => {
     let currentState = Map({
         'uploadTestKey': new Upload({
             name: 'uploadTestKey',
@@ -21,8 +21,8 @@ it('start upload action will combine upload\'s watting queue and failed queue th
             ]),
             failedQueue: List([
                 new UploadItem({
-                    name: 'Setting',
-                    filepath: '../screens/Setting'
+                    name: 'AddItem',
+                    filepath: '../screens/AddItem'
             ]),
         })
     })
@@ -37,8 +37,8 @@ it('start upload action will combine upload\'s watting queue and failed queue th
                     filepath: '../screens/Login'
                 }),
                 new UploadItem({
-                    name: 'Setting',
-                    filepath: '../screens/Setting'
+                    name: 'AddItem',
+                    filepath: '../screens/AddItem'
                 }),
             ]),
             uploadedQueue: List([
@@ -69,4 +69,4 @@ describe("upload component reducer test", () => {
     })
     currentState = UploadReducer(currentState, UPloadActions.destroyUpload({upload: 'uploadTestKey'}))
     expect(currentState).toMatchSnapshot()
-    })
+    });
