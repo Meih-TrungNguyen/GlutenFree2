@@ -1,26 +1,37 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
+import { Button, TextField } from "@material-ui/core";
+import { Text, View, StyleSheet } from "react-native";
 import { validateAll } from "indicative/validator";
+import { useFonts } from "@expo-google-fonts/raleway";
+import { withStyles } from "@material-ui/styles";
+
 import firebase from "firebase";
+
+const styling = (theme) => ({
+  button: {
+    marginTop: 50,
+    marginLeft: 70,
+    marginRight: 70,
+    fontFamily: "Questrial",
+    fontWeight: "600",
+    backgroundColor: "#FFCD29",
+  },
+  textBox: {
+    marginBottom: 10,
+  },
+});
 
 export class Login extends Component {
   constructor(props) {
     super(props);
-
+    const { emailVerified } = this.props;
+    console.log(emailVerified);
     this.state = {
       email: "",
       password: "",
       error: {},
     };
-
-    this.onSignUp = this.onSignUp.bind(this);
+    this.onSignIn = this.onSignIn.bind(this);
   }
 
   validate = async (data) => {
@@ -30,11 +41,13 @@ export class Login extends Component {
     };
 
     const message = {
-      "email.required": "Email cannot be empty",
-      "password.required": "Password cannot be empty",
+      "email.required": "Email is required",
+      "password.required": "Password is required",
+      "email.email": "The email syntax is incorrect",
+      "password.string": "The password is incorrect",
     };
     try {
-      await validateAll(data, rules, message).then(() => this.onSignUp());
+      await validateAll(data, rules, message).then(() => this.onSignIn());
     } catch (errors) {
       const formattedErrors = {};
       console.log("=====", errors.response);
@@ -52,111 +65,134 @@ export class Login extends Component {
         this.setState({
           error: formattedErrors,
         });
+        console.log(this.state);
       }
     }
   };
 
-  onSignUp() {
+  onSignIn() {
     const { email, password } = this.state;
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
 
       .then((result) => {
-        console.log(result);
+        this.setState({
+          error: {},
+        });
       })
       .catch((error) => {
+        const formattedErrors = {};
         if (error.code === "auth/user-not-found") {
-          alert("The email has not been registered");
+          formattedErrors["email"] = error.message;
         }
-
         if (error.code === "auth/wrong-password") {
-          alert("Incorrect password");
+          formattedErrors["password"] = error.message;
         }
-
-        if (error.code === "auth/invalid-email") {
-          alert("Enter a valid email");
-        }
-        console.log(error);
+        this.setState({
+          error: formattedErrors,
+        });
       });
   }
 
   render() {
-    return (
-      <ImageBackground
-        source={require("../assets/gluten-free-background.jpg")}
-        style={styles.backgroundImage}
-      >
-        <View style={styles.textcontainer}>
-          <Text style={styles.topText}>LOGIN TO YOUR ACCOUNT</Text>
-        </View>
-        <View style={styles.screenContainer}>
-          {this.state.error["email"] && (
-            <Text
-              style={{
-                fontSize: 15,
-                color: "red",
-                marginBottom: 2,
-                paddingLeft: 10,
-              }}
-            >
-              {this.state.error["email"]}
-            </Text>
-          )}
-          <View style={styles.textBoxView}>
-            <TextInput
-              style={styles.textBox}
-              placeholder="Enter Email"
-              onChangeText={(email) => this.setState({ email })}
-            />
-          </View>
-          {this.state.error["password"] && (
-            <Text
-              style={{
-                fontSize: 15,
-                color: "red",
-                marginBottom: 2,
-                paddingLeft: 10,
-              }}
-            >
-              {this.state.error["password"]}
-            </Text>
-          )}
-          <View style={styles.textBoxView}>
-            <TextInput
-              style={styles.textBox}
-              placeholder="Enter Password"
-              secureTextEntry={true}
-              onChangeText={(password) => this.setState({ password })}
-            />
-          </View>
+    const { classes } = this.props;
 
-          <View style={styles.buttons}>
-            <TouchableOpacity onPress={() => this.validate()}>
-              <Text style={styles.textElement}>Login</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ height: 25 }} />
+    return (
+      <View style={{ flex: 1, marginTop: 30 }}>
+        <View style={styles.textcontainer}>
           <Text
-            onPress={() => this.props.navigation.navigate("Forgot Password")}
-            style={{ color: "##0000FF", fontSize: 18 }}
+            style={{
+              fontFamily: "Questrial",
+              fontWeight: "1000",
+              fontSize: "30px",
+              textAlign: "left",
+              marginBottom: 15,
+            }}
           >
-            Forgot Password?.
+            Let's sign you in.
+          </Text>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontSize: "25px",
+              textAlign: "left",
+            }}
+          >
+            Welcome back.
+          </Text>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontSize: "25px",
+              textAlign: "left",
+            }}
+          >
+            You've been missed!
           </Text>
         </View>
-      </ImageBackground>
+        <View style={styles.screenContainer}>
+          <View style={styles.form}>
+            <TextField
+              id="email"
+              label="Email"
+              placeholder="Enter email"
+              variant="outlined"
+              value={this.state.email}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ email: value });
+              }}
+              error={!!this.state.error["email"]}
+              helperText={this.state.error["email"]}
+              className={classes.textBox}
+              size="small"
+            />
+            <TextField
+              id="password"
+              label="Password"
+              placeholder="Enter password"
+              variant="outlined"
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ password: value });
+              }}
+              error={!!this.state.error["password"]}
+              helperText={this.state.error["password"]}
+              className={classes.textBox}
+              size="small"
+            />
+          </View>
+          <Button
+            variant="contained"
+            className={classes.button}
+            onClick={() => this.validate(this.state)}
+          >
+            Sign In
+          </Button>
+          <View style={{ height: 25 }} />
+          <Text
+            style={styles.forgotBtn}
+            onClick={() => this.props.navigation.navigate("Forgot Password")}
+          >
+            Forgot password?
+          </Text>
+        </View>
+      </View>
     );
   }
 }
+
+export default withStyles(styling)(Login);
+
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     paddingTop: 20,
-    alignItems: "center",
   },
   textcontainer: {
-    alignItems: "center",
-    marginTop: 20,
+    marginLeft: 30,
+    lineHeight: 1.4,
   },
   backgroundImage: {
     flex: 1,
@@ -173,10 +209,16 @@ const styles = StyleSheet.create({
     width: 20,
     height: 10,
   },
-  textBoxView: {
-    flexDirection: "row",
-    marginBottom: 20,
-    paddingVertical: 10,
+  forgotBtn: {
+    textAlign: "center",
+    fontSize: "16px",
+    color: "#1976D2",
+    fontFamily: "Questrial",
+  },
+  form: {
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 40,
   },
   textBox: {
     paddingHorizontal: 10,
@@ -203,4 +245,3 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
 });
-export default Login;

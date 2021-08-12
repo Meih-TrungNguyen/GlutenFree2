@@ -1,70 +1,109 @@
 import React from "react";
+import Button from "@material-ui/core/Button";
 import {
   Text,
   View,
-  Button,
   TextInput,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  Image,
 } from "react-native";
-import { withTheme } from "react-native-elements";
+import { useFonts } from "@expo-google-fonts/raleway";
+import { makeStyles } from "@material-ui/core/styles";
 
 export default function Landing({ navigation }) {
+  let [fontsLoaded, error] = useFonts({
+    Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+  });
+
+  const classes = useStyles();
+
   return (
-    <ImageBackground
-      source={require("../assets/gluten-free-background.jpg")}
-      style={styles.backgroundImage}
-    >
-      <View style={styles.screenContainer}>
-        <Text style={styles.textBox}>GlutenFree App</Text>
-        <View style={styles.buttons}>
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text style={styles.textElement}>Register</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.space} />
-        <View style={styles.buttons}>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-            <Text style={styles.textElement}>Login</Text>
-          </TouchableOpacity>
+    <View style={styles.screenContainer}>
+      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.description}>
+        Get your medical tax back for your gluten free products
+      </Text>
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require("../assets/gluten-free.png")}
+      ></ImageBackground>
+      <View>
+        <Button
+          variant="contained"
+          className={classes.button}
+          onClick={() => navigation.navigate("Login")}
+        >
+          Sign In
+        </Button>
+        <View style={styles.signUpContainer}>
+          <Text style={styles.signUpMessage}>Doesn't have an account?</Text>
+          <Text
+            style={styles.signUpBtn}
+            onClick={() => navigation.navigate("Register")}
+          >
+            Sign Up
+          </Text>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    marginTop: "50px",
+    fontFamily: "Questrial",
+    fontWeight: "600",
+    backgroundColor: "#FFCD29",
+  },
+}));
 
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 300,
   },
   backgroundImage: {
-    flex: 1,
+    width: "230px",
+    height: "230px",
     resizeMode: "cover",
     justifyContent: "center",
+    alignItems: "center",
   },
-  buttons: {
-    backgroundColor: "lightgrey",
-    color: "white",
-    fontSize: 200,
-    height: 50,
-    width: 200,
+  title: {
+    position: "absolute",
+    top: "120px",
+    fontWeight: "1000",
+    fontSize: "30px",
+    fontFamily: "Questrial",
   },
-  space: {
-    width: 20,
-    height: 20,
-  },
-  textBox: {
-    marginBottom: 100,
-    fontSize: 45,
-    color: "brown",
-  },
-  textElement: {
-    fontSize: 25,
-    marginTop: 8,
+  description: {
+    position: "absolute",
+    top: "170px",
+    fontSize: "16px",
+    marginLeft: "30px",
+    marginRight: "30px",
+    fontFamily: "Questrial",
     textAlign: "center",
+    lineHeight: "1.4",
+  },
+  signUpContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "20px",
+  },
+  signUpBtn: {
+    marginLeft: "10px",
+    fontSize: "16px",
+    color: "#1976D2",
+    fontFamily: "Questrial",
+  },
+  signUpMessage: {
+    fontSize: "16px",
+    fontFamily: "Questrial",
   },
 });

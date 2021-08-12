@@ -6,9 +6,6 @@ import {
   KeyboardAvoidingView,
   Text,
   Platform,
-  TouchableWithoutFeedback,
-  Button,
-  Keyboard,
   View,
   TouchableOpacity,
   StatusBar,
@@ -68,16 +65,11 @@ export default class AddItem extends Component {
   };
 
   /**this function validate the ItemName field,
-   * it can not be EMPTY, and only contains letters
+   * it can not be EMPTY
    */
   nameValidator() {
-    let rjx = /^[a-zA-Z]+$/;
-    let isValid = rjx.test(this.state.name);
-    console.warn(isValid);
     if (this.state.name == "") {
       this.setState({ nameError: "Field can not be Empty" });
-    } else if (!isValid) {
-      this.setState({ nameError: "Name field could only contains letters" });
     } else {
       this.setState({ nameError: "" });
     }
@@ -198,6 +190,7 @@ export default class AddItem extends Component {
                 style={styles.textInput}
                 placeholder={"Enter price"}
                 placeholderTextColor="black"
+                inputmode="numeric"
                 keyboardType="numeric"
                 onChangeText={(text) => this.setState({ price: text })}
               />
@@ -217,6 +210,7 @@ export default class AddItem extends Component {
                 keyboardType="numeric"
                 placeholder={"Number of consumers"}
                 placeholderTextColor="black"
+                inputmode="numeric"
                 maxLength={1}
                 value={this.state.consumer}
                 onChangeText={(text) => this.setState({ consumer: text })}
@@ -226,6 +220,7 @@ export default class AddItem extends Component {
                 style={styles.textInput}
                 placeholder={"Quantity"}
                 placeholderTextColor="black"
+                inputmode="numeric"
                 maxLength={2}
                 keyboardType="numeric"
                 onChangeText={(text) => this.setState({ quantity: text })}

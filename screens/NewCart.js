@@ -1,7 +1,5 @@
 import React from "react";
 import { Component } from "react";
-import firebase from "firebase";
-
 import {
   Text,
   View,
@@ -10,30 +8,11 @@ import {
   SafeAreaView,
   ImageBackground,
 } from "react-native";
-import {
-  Ionicons,
-  AntDesign,
-  Entypo,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import AddItem from "./AddItem";
-import HomeScreen from "./Home";
-import LinkItem from "./LinkItem";
-import ViewCart from "./ViewCart";
+import { AntDesign } from "@expo/vector-icons";
 
-export default class NewCart extends Component {
+export class NewCart extends Component {
   constructor(props) {
     super(props);
-  }
-
-  print() {
-    const ref = firebase
-      .database()
-      .ref("User/" + firebase.auth().currentUser.uid + "/Carts");
-
-    ref.on("value", (snap) => {
-      console.log(snap.val());
-    });
   }
 
   render() {
@@ -45,7 +24,7 @@ export default class NewCart extends Component {
       >
         <View style={styles.textBoxView}>
           <TouchableOpacity
-            onPress={() => this.print()} //this.props.navigation.navigate("Home")}
+            onPress={() => this.props.navigation.navigate("Home")}
             title="Go Home"
           >
             <AntDesign name="home" size={50} color="black" />
@@ -172,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// export default NewCart;
+export default NewCart;

@@ -1,20 +1,14 @@
 import React from "react";
 import firebase from "firebase";
-import {
-  Text,
-  View,
-  Button,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
-import { withTheme } from "react-native-elements";
+import { View, Image, Text } from "react-native";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 
 export default function VerifyEmail() {
   const onLogout = () => {
     firebase.auth().signOut();
   };
+  const classes = useStyles();
 
   const verify = () => {
     firebase
@@ -30,58 +24,57 @@ export default function VerifyEmail() {
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/gluten-free-background.jpg")}
-      style={styles.backgroundImage}
-    >
-      <View style={styles.screenContainer}>
-        <View style={styles.buttons}>
-          <TouchableOpacity onPress={() => verify()}>
-            <Text style={styles.textElement}>Send Verify Email</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.space} />
-        <View style={styles.buttons}>
-          <TouchableOpacity onPress={() => onLogout()}>
-            <Text style={styles.textElement}>Logout</Text>
-          </TouchableOpacity>
-        </View>
+    <View style={{ margin: 30, alignItems: "center" }}>
+      <Image
+        source={require("../assets/bread.png")}
+        style={{ width: 100, height: 100 }}
+      ></Image>
+      <View>
+        <Text
+          style={{
+            fontFamily: "Questrial",
+            fontWeight: "1000",
+            fontSize: "30px",
+            marginBottom: 15,
+            textAlign: "center",
+          }}
+        >
+          Oops...
+        </Text>
+        <Text
+          style={{
+            fontFamily: "Questrial",
+            fontSize: "16px",
+            textAlign: "center",
+            lineHeight: "1.4",
+            marginBottom: 15,
+          }}
+        >
+          Ghi dzo
+        </Text>
       </View>
-    </ImageBackground>
+      <Button
+        variant="contained"
+        className={classes.button}
+        onClick={() => verify()}
+      >
+        Send Verify Email
+      </Button>
+      <Button
+        variant="contained"
+        className={classes.button}
+        onClick={() => onLogout()}
+      >
+        Logout
+      </Button>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  screenContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 300,
+const useStyles = makeStyles((theme) => ({
+  button: {
+    fontFamily: "Questrial",
+    fontWeight: "600",
+    backgroundColor: "#FFCD29",
+    marginBottom: 20,
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  },
-  buttons: {
-    backgroundColor: "lightgrey",
-    color: "white",
-    fontSize: 200,
-    height: 50,
-    width: 200,
-  },
-  space: {
-    width: 20,
-    height: 20,
-  },
-  textBox: {
-    marginBottom: 100,
-    fontSize: 45,
-    color: "brown",
-  },
-  textElement: {
-    fontSize: 25,
-    marginTop: 8,
-    textAlign: "center",
-  },
-});
+}));

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button, TextField } from "@material-ui/core";
 import {
   Text,
   View,
@@ -6,9 +7,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
+  Image,
 } from "react-native";
 import { validateAll } from "indicative/validator";
+import { useFonts } from "@expo-google-fonts/raleway";
+import { withStyles } from "@material-ui/styles";
 import firebase from "firebase";
+
+const styling = (theme) => ({
+  button: {
+    marginTop: "50px",
+    fontFamily: "Questrial",
+    fontWeight: "600",
+    backgroundColor: "#FFCD29",
+  },
+});
 
 export class PasswordRecover extends Component {
   constructor(props) {
@@ -19,7 +32,7 @@ export class PasswordRecover extends Component {
       error: {},
     };
 
-    this.onSignUp = this.onSignUp.bind(this);
+    this.forgotPassword = this.forgotPassword.bind(this);
   }
   validate = async (data) => {
     const rules = {
@@ -28,9 +41,10 @@ export class PasswordRecover extends Component {
 
     const message = {
       "email.required": "Email cannot be empty",
+      "email.email": "The email syntax is incorrect",
     };
     try {
-      await validateAll(data, rules, message).then(() => this.onSignUp());
+      await validateAll(data, rules, message).then(() => this.forgotPassword());
     } catch (errors) {
       const formattedErrors = {};
       console.log("=====", errors.response);
@@ -52,62 +66,101 @@ export class PasswordRecover extends Component {
     }
   };
 
-  onSignUp() {
+  forgotPassword() {
     const { email } = this.state;
     firebase
       .auth()
       .sendPasswordResetEmail(email)
       .then((result) => {
-        alert("Password Recovery Email Sent");
+        alert("Email sent, please check you inbox/spam");
         console.log(result);
       })
       .catch((error) => {
+        const formattedErrors = {};
         if (error.code === "auth/user-not-found") {
-          alert("The email has not been registered");
+          formattedErrors["email"] = error.message;
         }
 
-        if (error.code === "auth/invalid-email") {
-          alert("Enter a valid email");
-        }
-        console.log(error);
+        this.setState({
+          error: formattedErrors,
+        });
       });
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <ImageBackground
-        source={require("../assets/gluten-free-background.jpg")}
-        style={styles.backgroundImage}
-      >
-        <View style={styles.screenContainer}>
-          <View style={styles.textBoxView}>
-            <TextInput
-              style={styles.textBox}
-              placeholder="Enter Registered Email"
-              onChangeText={(email) => this.setState({ email })}
-            />
-          </View>
-          <View style={styles.space} />
-          <View style={styles.buttons}>
-            <TouchableOpacity onPress={() => this.validate()}>
-              <Text style={styles.textElement}>Send Recovery Email</Text>
-            </TouchableOpacity>
-          </View>
+      <View style={{ flex: 1, alignItems: "center", margin: 30 }}>
+        <Image
+          source={require("../assets/password.png")}
+          style={styles.backgroundImage}
+        ></Image>
+        <View style={{ maginTop: 30 }}>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontWeight: "1000",
+              fontSize: "30px",
+              marginBottom: 15,
+              textAlign: "center",
+            }}
+          >
+            Forgot password?
+          </Text>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontSize: "16px",
+              textAlign: "center",
+              lineHeight: "1.4",
+              marginBottom: 15,
+            }}
+          >
+            We just need your registered email address to send you password
+            reset
+          </Text>
+          <TextField
+            id="email"
+            label="Email"
+            placeholder="Enter email"
+            variant="outlined"
+            value={this.state.email}
+            onChange={(event) => {
+              const { value } = event.target;
+              this.setState({ email: value });
+            }}
+            error={!!this.state.error["email"]}
+            helperText={this.state.error["email"]}
+            size="small"
+          />
         </View>
-      </ImageBackground>
+        <Button
+          variant="contained"
+          className={classes.button}
+          onClick={() => this.validate(this.state)}
+        >
+          Reset Password
+        </Button>
+        {/* TODO: Add don't have an account? register */}
+        <View></View>
+      </View>
     );
   }
 }
+
+export default withStyles(styling)(PasswordRecover);
+
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    paddingTop: 200,
     paddingHorizontal: 10,
     alignItems: "center",
   },
   backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
+    width: 100,
+    height: 100,
+    alignItems: "center",
     justifyContent: "center",
   },
   buttons: {
@@ -126,7 +179,6 @@ const styles = StyleSheet.create({
   },
   textBox: {
     paddingHorizontal: 10,
-    paddingVertical: 20,
     marginHorizontal: 30,
     backgroundColor: "white",
     shadowColor: "#000",
@@ -143,4 +195,3 @@ const styles = StyleSheet.create({
     color: "black",
   },
 });
-export default PasswordRecover;

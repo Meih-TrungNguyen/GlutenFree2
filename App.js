@@ -1,28 +1,27 @@
+import React, { Component, useState } from "react";
 
-import React, { Component, useState } from 'react';
-
-import { View, Text, Image, StyleSheet, Button } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import firebase from 'firebase'
-import HomeScreen from './screens/Home';
-import RegisterScreen from './screens/Register';
-import LoginScreen from './screens/Login';
-import LandingScreen from './screens/Landing';
-import NewCart from './screens/NewCart';
-import 'react-native-gesture-handler';
-import splashPic from './assets/GlutenFreeSplash.jpg';
-import AddItem from './screens/AddItem';
-import ViewCart from './screens/ViewCart';
-import History from './screens/History';
-import VerifyEmailScreen from './screens/VerifyEmail.js';
-import RecoverScreen from './screens/PasswordRecover';
-import LinkItem from './screens/LinkItem';
-import Report from './screens/Report';
-import EditItem from './screens/EditItem';
-import Setting from './screens/Setting';
-import EditProfile from './screens/EditProfile';
-import EditAuth from './screens/EditAuth';
+import { View, Text, Image, StyleSheet, Button } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import firebase from "firebase";
+import HomeScreen from "./screens/Home";
+import RegisterScreen from "./screens/Register";
+import LoginScreen from "./screens/Login";
+import LandingScreen from "./screens/Landing";
+import NewCart from "./screens/NewCart";
+import "react-native-gesture-handler";
+import splashPic from "./assets/GlutenFreeSplash.jpg";
+import AddItem from "./screens/AddItem";
+import ViewCart from "./screens/ViewCart";
+import History from "./screens/History";
+import VerifyEmailScreen from "./screens/VerifyEmail.js";
+import RecoverScreen from "./screens/PasswordRecover";
+import LinkItem from "./screens/LinkItem";
+import Report from "./screens/Report";
+import EditItem from "./screens/EditItem";
+import Setting from "./screens/Setting";
+import EditProfile from "./screens/EditProfile";
+import EditAuth from "./screens/EditAuth";
 
 const Stack = createStackNavigator();
 
@@ -43,7 +42,7 @@ if (!firebase.apps.length) {
 function splashScreen({ navigation }) {
   setTimeout(() => {
     navigation.replace("Landing"); //stack name
-  }, 3000);
+  }, 0);
 
   return (
     <View
@@ -99,9 +98,45 @@ export class App extends Component {
               component={LandingScreen}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Forgot Password" component={RecoverScreen} />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "#F2F2F2",
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "#F2F2F2",
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="Forgot Password"
+              component={RecoverScreen}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "#F2F2F2",
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
+                },
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       );
@@ -109,7 +144,19 @@ export class App extends Component {
       return (
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Verify Email" component={VerifyEmailScreen} />
+            <Stack.Screen
+              name="Verify Email"
+              component={VerifyEmailScreen}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "#F2F2F2",
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
+                },
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       );
