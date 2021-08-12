@@ -15,6 +15,9 @@ import { validateAll } from "indicative/validator";
 import "firebase/firestore";
 import { style } from "@material-ui/system";
 
+/**Class to let users be Register to 
+ * be allow to use the App.
+ */
 export class Register extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +35,8 @@ export class Register extends Component {
     this.onSignUp = this.onSignUp.bind(this);
   }
 
+  // function to validate personal information of
+  // the user, including password
   validate = async (data) => {
     const rules = {
       firstname: "required|string",
@@ -72,6 +77,9 @@ export class Register extends Component {
     }
   };
 
+  // function to authentificate email and password
+  // to be staored in the cloud firebase. then pass into
+  // validate function
   onSignUp() {
     const { email, password, firstname, lastname, city, province } = this.state;
     firebase
@@ -99,6 +107,9 @@ export class Register extends Component {
       });
   }
 
+  // render is a function that tell what to display
+  // on the Register screen. every component will 
+  // have a title to describe them.
   render() {
     return (
       <ImageBackground
@@ -119,6 +130,7 @@ export class Register extends Component {
             </Text>
           )}
           <View style={styles.textBoxView}>
+            {/* text box to fill the user's first name */}
             <TextInput
               style={styles.textBox}
               placeholder="First name"
@@ -126,6 +138,7 @@ export class Register extends Component {
               onChangeText={(firstname) => this.setState({ firstname })}
             />
             <View style={styles.space}></View>
+            {/* text box to fill the user's last name */}
             <TextInput
               style={styles.textBox}
               placeholder="Last name"
@@ -146,6 +159,7 @@ export class Register extends Component {
             </Text>
           )}
           <View style={styles.textBoxView}>
+            {/* text box to fill the user's email */}
             <TextInput
               style={styles.eBox}
               placeholder="Email Address"
@@ -179,6 +193,7 @@ export class Register extends Component {
             </Text>
           )}
           <View style={styles.testView}>
+            {/* text box to fill the user's password */}
             <TextInput
               style={styles.textBox}
               placeholder="Password"
@@ -187,6 +202,7 @@ export class Register extends Component {
               onChangeText={(password) => this.setState({ password })}
             />
             <View style={styles.space}></View>
+            {/* text box to fill the confirmation password */}
             <TextInput
               style={styles.textBox}
               placeholder="Confirm Password"
@@ -198,6 +214,7 @@ export class Register extends Component {
             />
           </View>
           <View style={styles.pickerView}>
+            {/* list of cities to be selected */}
             <Picker
               style={styles.picker}
               selectedValue={ this.state.city }
@@ -258,6 +275,7 @@ export class Register extends Component {
             </Picker>
             
             <View style={styles.space}></View>
+            {/* List of Provinces to be selected */}
             <Picker
               style={styles.picker}
               selectedValue={ this.state.province }
@@ -290,6 +308,8 @@ export class Register extends Component {
     );
   }
 }
+
+// Styling for screens
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

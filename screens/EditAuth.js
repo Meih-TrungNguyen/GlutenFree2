@@ -10,6 +10,8 @@ import {
 import { validateAll } from "indicative/validator";
 import firebase from "firebase";
 
+/**Class EditAuth responsible to validate Password amd Email. 
+ */
 export class EditAuth extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +36,8 @@ export class EditAuth extends Component {
     return user.reauthenticateWithCredential(cred);
   }
 
+  // this fucntion validate the password and check for errors 
+  // to a new passowrd when is required
   onPasswordChange() {
     const { currentpassword, newpassword } = this.state;
     this.reauthenticate(currentpassword)
@@ -62,6 +66,7 @@ export class EditAuth extends Component {
       });
   }
 
+  // validation of the Email in order to accept a real email format.
   onEmailChange() {
     const { currentpassword, email } = this.state;
     this.reauthenticate(currentpassword)
@@ -98,6 +103,9 @@ export class EditAuth extends Component {
       });
   }
 
+  // render is a function that tell what to display
+  // on the EditAuth screen. every component will 
+  // have a title to describe them.
   render() {
     return (
       <ImageBackground
@@ -118,6 +126,7 @@ export class EditAuth extends Component {
             </Text>
           )}
           <View style={styles.textBoxView}>
+            {/* placeholder for the current password */}
             <TextInput
               style={styles.textBox}
               placeholder="Enter Current Password"
@@ -141,6 +150,7 @@ export class EditAuth extends Component {
             </Text>
           )}
           <View style={styles.textBoxView}>
+            {/* placeholder for the new password */}
             <TextInput
               style={styles.textBox}
               placeholder="Enter New Password"
@@ -171,6 +181,7 @@ export class EditAuth extends Component {
             </Text>
           )}
           <View style={styles.textBoxView}>
+            {/* placeholder for new email */}
             <TextInput
               style={styles.textBox}
               placeholder="Enter New Email"
@@ -191,6 +202,8 @@ export class EditAuth extends Component {
     );
   }
 }
+
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

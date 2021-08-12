@@ -9,6 +9,9 @@ import img4 from './images/image4.jpg';
 import img5 from './images/image5.jpg';
 import img6 from './images/image6.jpg';
 
+/**class LinkItem will list Items that are stored in data base
+ * to be re-use for following shoppings.
+ */
 export default class LinkItem extends Component {
   constructor(props) {
     super(props);
@@ -193,7 +196,7 @@ export default class LinkItem extends Component {
 
 }
 
-
+// Styling for screen
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,

@@ -11,6 +11,9 @@ import {
 } from "react-native";
 import { withTheme } from "react-native-elements";
 
+/**function VerifyEmail check if email exit by sending 
+ * email to be confirmed.
+ */
 export default function VerifyEmail() {
   const onLogout = () => {
     firebase.auth().signOut();
@@ -51,6 +54,7 @@ export default function VerifyEmail() {
   );
 }
 
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

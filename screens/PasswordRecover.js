@@ -10,6 +10,10 @@ import {
 import { validateAll } from "indicative/validator";
 import firebase from "firebase";
 
+/**Class PasswordRecover responsible to offer functionalities
+ * to the users to recover their password. in case the user
+ * does not remember.
+ */
 export class PasswordRecover extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +25,8 @@ export class PasswordRecover extends Component {
 
     this.onSignUp = this.onSignUp.bind(this);
   }
+  // Validate function to recover password which
+  // require an email from the user
   validate = async (data) => {
     const rules = {
       email: "required|email",
@@ -52,6 +58,8 @@ export class PasswordRecover extends Component {
     }
   };
 
+  // function to sign up and recover password 
+  // by authentificate the email
   onSignUp() {
     const { email } = this.state;
     firebase
@@ -73,6 +81,9 @@ export class PasswordRecover extends Component {
       });
   }
 
+  // render is a function that tell what to display
+  // on the PasswordRecover screen. every component will 
+  // have a title to describe them.
   render() {
     return (
       <ImageBackground
@@ -81,6 +92,7 @@ export class PasswordRecover extends Component {
       >
         <View style={styles.screenContainer}>
           <View style={styles.textBoxView}>
+            {/* textbox for entering register email */}
             <TextInput
               style={styles.textBox}
               placeholder="Enter Registered Email"
@@ -98,6 +110,8 @@ export class PasswordRecover extends Component {
     );
   }
 }
+
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

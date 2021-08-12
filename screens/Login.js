@@ -10,6 +10,9 @@ import {
 import { validateAll } from "indicative/validator";
 import firebase from "firebase";
 
+/**Class Login responsible to show a screen to log into the App,
+ * boxes for email and password.
+ */
 export class Login extends Component {
   constructor(props) {
     super(props);
@@ -23,6 +26,7 @@ export class Login extends Component {
     this.onSignUp = this.onSignUp.bind(this);
   }
 
+  // validattion for email and password
   validate = async (data) => {
     const rules = {
       email: "required|email",
@@ -56,6 +60,8 @@ export class Login extends Component {
     }
   };
 
+  // verification for password amd email with the
+  // database (firebase)
   onSignUp() {
     const { email, password } = this.state;
     firebase
@@ -81,6 +87,9 @@ export class Login extends Component {
       });
   }
 
+  // render is a function that tell what to display
+  // on the Login screen. every component will 
+  // have a title to describe them.
   render() {
     return (
       <ImageBackground
@@ -103,6 +112,7 @@ export class Login extends Component {
               {this.state.error["email"]}
             </Text>
           )}
+          {/* Enter Email */}
           <View style={styles.textBoxView}>
             <TextInput
               style={styles.textBox}
@@ -122,6 +132,7 @@ export class Login extends Component {
               {this.state.error["password"]}
             </Text>
           )}
+          {/* Enter Password */}
           <View style={styles.textBoxView}>
             <TextInput
               style={styles.textBox}
@@ -148,6 +159,8 @@ export class Login extends Component {
     );
   }
 }
+
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

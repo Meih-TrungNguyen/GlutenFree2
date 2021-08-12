@@ -15,6 +15,10 @@ import firebase from "firebase";
 import { format } from "date-fns";
 import { Component } from "react";
 
+/**Class HomeScreen responsible to show a list of icon,
+ * that represent a menu for several options to do inside the App.
+ * New Cart, History, Report, Settings and Logout.
+ */
 export class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -55,6 +59,10 @@ export class HomeScreen extends Component {
     console.log(cartNumber);
     this.newCart();
   }
+
+  // render is a function that tell what to display
+  // on the HomeScreen screen. every component will 
+  // have a title to describe them.
   render() {
     return (
       <ImageBackground
@@ -68,6 +76,8 @@ export class HomeScreen extends Component {
               onPress={() => this.updateCart()}
               title="Go to new cart"
             >
+              {/* This Icon redirect to a NewCart screen
+              where customer will start shopping */}
               <AntDesign name="shoppingcart" size={70} color="black" />
             </TouchableOpacity>
             <Text style={styles.textElement}>New Cart</Text>
@@ -78,6 +88,8 @@ export class HomeScreen extends Component {
               onPress={() => this.props.navigation.navigate("History")}
               title="Go to new cart"
             >
+              {/* this Icon will show a list of previous shopping
+              in another screen  */}
               <AntDesign name="book" size={70} color="black" />
             </TouchableOpacity>
             <Text style={styles.textElement}>History</Text>
@@ -88,6 +100,7 @@ export class HomeScreen extends Component {
               onPress={() => this.props.navigation.navigate("NewCart")}
               title="Go to new cart"
             >
+            {/*  */}
               <AntDesign name="form" size={70} color="black" />
             </TouchableOpacity>
             <Text style={styles.textElement}>Report</Text>
@@ -97,6 +110,8 @@ export class HomeScreen extends Component {
               onPress={() => this.props.navigation.navigate("Setting")}
               title="Go to new cart"
             >
+              {/* This Icon redirect to another screeen to make
+               updates in user's personal information */}
               <AntDesign name="tool" size={70} color="black" />
             </TouchableOpacity>
             <Text style={styles.textElement}>Settings</Text>
@@ -106,6 +121,8 @@ export class HomeScreen extends Component {
               onPress={() => this.onLogout()}
               title="Go to new cart"
             >
+              {/* This Icon is to exit the App
+              to go to the landing screen  */}
               <AntDesign name="logout" size={70} color="black" />
             </TouchableOpacity>
             <Text style={styles.textElement}>Logout</Text>
@@ -116,6 +133,7 @@ export class HomeScreen extends Component {
   }
 }
 
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

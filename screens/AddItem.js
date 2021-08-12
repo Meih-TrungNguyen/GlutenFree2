@@ -25,6 +25,11 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 
+/**Class AddItem responsible to show the screen,
+ * where customers can add items by placing attributes 
+ * of the Item such as Name, Price, Quantity and other
+ * element to identified the Item as Gluten Free product
+ */
 export default class AddItem extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +49,7 @@ export default class AddItem extends Component {
   updateSearch = (search) => {
     this.setState({ search });
   };
-
+  // Gluten Free switch
   GlutenSwitch = (value) => {
     if (this.state.glutenSwitch) {
       this.setState({ glutenSwitch: false });
@@ -52,6 +57,8 @@ export default class AddItem extends Component {
       this.setState({ glutenSwitch: true });
     }
   };
+
+  // Switch to select if item is or not taxable
   TaxSwitch = (value) => {
     if (this.state.taxSwitch) {
       this.setState({ taxSwitch: false });
@@ -59,6 +66,8 @@ export default class AddItem extends Component {
       this.setState({ taxSwitch: true });
     }
   };
+
+  // Siwtch to select if item is or not a prescription
   MedSwitch = (value) => {
     if (this.state.medSwitch) {
       this.setState({ medSwitch: false });
@@ -148,6 +157,9 @@ export default class AddItem extends Component {
       });
   }
 
+  // render is a function that tell what to display
+  // on the the AddItem screen. every component will 
+  // have a title to describe them.
   render() {
     const { search } = this.state;
     return (
@@ -285,6 +297,7 @@ export default class AddItem extends Component {
   }
 }
 
+// Styling for the AddItem screen
 const styles = StyleSheet.create({
   scrollView: {
     marginHorizontal: 20,

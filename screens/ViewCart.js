@@ -4,8 +4,11 @@ import { Text, View, TouchableOpacity, SafeAreaView, StyleSheet, ImageBackground
 import { ListItem, Icon } from 'react-native-elements';
 
 import {Ionicons, AntDesign, Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
-/**Class Edit Item responsible to update item
- * from the Cart
+
+/**Class ViewCart responsible to show the list of items,
+ * that customer has alredy done, after review
+ * customer have the oportunity to edit or save the cart
+ * to confirm the transaction is done
  */
 export default class ViewCart extends Component{
 
@@ -21,11 +24,15 @@ export default class ViewCart extends Component{
         };
     }
 
+    /**this function edit the item before confirmation,
+    */
     editItem(){
 
     }
     
-    
+    // render is a function that tell what to display
+    // on the the AddItem screen. every component will 
+    // have a title to describe them.
     render() {
         const list = [
             {
@@ -63,14 +70,17 @@ export default class ViewCart extends Component{
                         <ListItem key={i} bottomDivider>
                             <Icon name={item.icon} />
                             <ListItem.Content>
+                                {/* section to display name of the item */}
                                 <ListItem.Title>
                                     <Text>name: </Text>
                                     {item.name}
                                 </ListItem.Title>
+                                {/* section to display the number of items */}
                                 <ListItem.Title>
                                     <Text>quantity: </Text>
                                     {item.quantity}
                                 </ListItem.Title>
+                                {/* section to display the price of the item */}
                                 <ListItem.Title>
                                     <Text>price: </Text>
                                     {item.price}
@@ -105,6 +115,7 @@ export default class ViewCart extends Component{
     }
 }
 
+// Styling for the screen
 const styles = StyleSheet.create({
     screenContainer: {
         flex: 1,

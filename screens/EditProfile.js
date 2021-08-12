@@ -15,6 +15,9 @@ import { validateAll } from "indicative/validator";
 import "firebase/firestore";
 import { style } from "@material-ui/system";
 
+/**Class Register responsible to show the screen,
+ * where customers may edit personal information.
+ */
 export class Register extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +32,8 @@ export class Register extends Component {
     this.onSignUp = this.onSignUp.bind(this);
   }
 
+  /**this function validate the input data field,
+  */
   validate = async (data) => {
     const rules = {
       firstname: "required|string",
@@ -50,6 +55,9 @@ export class Register extends Component {
     }
   };
 
+  /**this function is resposible to save the information
+   * from the customer in the cloud Firebase
+  */
   onSignUp() {
     const { firstname, lastname, city, province } = this.state;
     firebase
@@ -69,6 +77,8 @@ export class Register extends Component {
       });
   }
 
+  // render is a function that tell what to display
+  // on the the EditProfile screen. 
   render() {
     return (
       <ImageBackground
@@ -89,6 +99,7 @@ export class Register extends Component {
             </Text>
           )}
           <View style={styles.textBoxView}>
+            {/* First name input */}
             <TextInput
               style={styles.textBox}
               placeholder="First name"
@@ -96,6 +107,7 @@ export class Register extends Component {
               onChangeText={(firstname) => this.setState({ firstname })}
             />
             <View style={styles.space}></View>
+            {/* Last name input */}
             <TextInput
               style={styles.textBox}
               placeholder="Last name"
@@ -103,7 +115,7 @@ export class Register extends Component {
               onChangeText={(lastname) => this.setState({ lastname })}
             />
           </View>
-
+              {/* List of cities to be selected */}
           <View style={styles.pickerView}>
             <Picker
               style={styles.picker}
@@ -175,7 +187,7 @@ export class Register extends Component {
               <Picker.Item label="Windsor" value="Windsor" />
               <Picker.Item label="Woodstock" value="Woodstock" />
             </Picker>
-
+              {/* List of Provinces to be selected */}
             <View style={styles.space}></View>
             <Picker
               style={styles.picker}
@@ -200,7 +212,7 @@ export class Register extends Component {
               <Picker.Item label="Yukon" value="Yukon" />
             </Picker>
           </View>
-
+              {/* Save changes button  */}
           <View style={styles.buttons}>
             <TouchableOpacity onPress={() => this.validate(this.state)}>
               <Text style={styles.textElement}>Save changes</Text>

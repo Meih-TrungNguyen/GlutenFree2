@@ -19,6 +19,10 @@ import HomeScreen from "./Home";
 import LinkItem from "./LinkItem";
 import ViewCart from "./ViewCart";
 
+/**Class NewCart responsible to show a list of icon,
+ * that represent a menu for several options to start shopping.
+ * Add Items, Viev Cart, Link items and Save Receipt.
+ */
 export default class NewCart extends Component {
   constructor(props) {
     super(props);
@@ -50,6 +54,7 @@ export default class NewCart extends Component {
                 }
                 title="Go Add Item"
               >
+                {/* Add Items Icon will redirect AddItem screen */}
                 <AntDesign name="pluscircleo" size={50} color="black" />
               </TouchableOpacity>
               <Text style={styles.textElement}>Add Items</Text>
@@ -59,6 +64,8 @@ export default class NewCart extends Component {
                 onPress={() => this.props.navigation.navigate("ViewCart")}
                 title="Go ViewCart"
               >
+                {/* View cart allows the user to see all the items
+                from one cart */}
                 <AntDesign name="eyeo" size={50} color="black" />
               </TouchableOpacity>
               <Text style={styles.textElement}>View Cart</Text>
@@ -68,6 +75,7 @@ export default class NewCart extends Component {
                 onPress={() => this.props.navigation.navigate("LinkItem")}
                 title="Go LinkItem"
               >
+                {/* quick access to an items are already in the database */}
                 <AntDesign name="link" size={50} color="black" />
               </TouchableOpacity>
               <Text style={styles.textElement}>Link Items</Text>
@@ -80,6 +88,7 @@ export default class NewCart extends Component {
                 onPress={() => this.props.navigation.navigate("Report")}
                 title="Go Report"
               >
+                {/* Save Receipt to be stored in database */}
                 <AntDesign name="save" size={50} color="" />
               </TouchableOpacity>
               <Text style={styles.textElement}>Save Receipt</Text>
@@ -105,6 +114,7 @@ export default class NewCart extends Component {
   }
 }
 
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

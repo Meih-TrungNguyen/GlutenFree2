@@ -21,6 +21,9 @@ const onLogout = () => {
   firebase.auth().signOut();
 };
 
+/**const setting a list of option 
+ * to edit and make change into profile user
+ */
 const Setting = ({ navigation }) => {
   return (
     <ImageBackground
@@ -36,6 +39,7 @@ const Setting = ({ navigation }) => {
           >
             <AntDesign name="edit" size={70} color="black" />
           </TouchableOpacity>
+          {/* go to Edit Profile screen */}
           <Text style={styles.textElement}>Edit Profile</Text>
         </View>
 
@@ -46,6 +50,7 @@ const Setting = ({ navigation }) => {
           >
             <AntDesign name="edit" size={70} color="black" />
           </TouchableOpacity>
+          {/* go to authentification screen */}
           <Text style={styles.textElement}>Change authenticate info</Text>
         </View>
 
@@ -63,6 +68,7 @@ const Setting = ({ navigation }) => {
   );
 };
 
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

@@ -17,8 +17,10 @@ import {
   Entypo,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-/**Class Edit Item responsible to update item
- * from the Cart
+
+/**Class EditItem responsible to show the screen,
+ * where customers can make changes in specific Item, 
+ * Name, Price and, Quantity.
  */
 export default class EditItem extends Component {
   constructor(props) {
@@ -31,8 +33,7 @@ export default class EditItem extends Component {
     };
   }
 
-  /**this function update changes made in the item,
-   */
+  //this function update changes made in the item.
   editItem() {
 
     alert("updated");
@@ -40,6 +41,9 @@ export default class EditItem extends Component {
 
   }
 
+  // render is a function that tell what to display
+  // on the the EditItem screen. every component will 
+  // have a title to describe them.
   render() {
     return (
       <ImageBackground
@@ -104,6 +108,7 @@ export default class EditItem extends Component {
   }
 }
 
+// Styling for the screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,

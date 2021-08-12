@@ -10,6 +10,10 @@ import {
 } from "react-native";
 import { withTheme } from "react-native-elements";
 
+/**function Landing will be the first screen the user
+ * will see to be Register as first time user or to 
+ * login as a regular user
+ */
 export default function Landing({ navigation }) {
   return (
     <ImageBackground
@@ -20,12 +24,15 @@ export default function Landing({ navigation }) {
         <Text style={styles.textBox}>GlutenFree App</Text>
         <View style={styles.buttons}>
           <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+            {/* Register redirect to Register.js where the 
+            user add personal information to be admited to use the App */}
             <Text style={styles.textElement}>Register</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.space} />
         <View style={styles.buttons}>
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            {/* Login allows user get into the App */}
             <Text style={styles.textElement}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -34,6 +41,7 @@ export default function Landing({ navigation }) {
   );
 }
 
+// Styling for screen
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
