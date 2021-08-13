@@ -4,6 +4,7 @@ import "./Data.json";
 import { Text, View, StyleSheet, Image } from "react-native";
 import { Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import * as Font from "expo-font";
 
 const styling = (theme) => ({
   button: {
@@ -28,6 +29,11 @@ export class Report extends Component {
       { label: "Name", key: "name" },
       { label: "Email", key: "email" },
     ];
+  }
+  componentDidMount() {
+    Font.loadAsync({
+      Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+    });
   }
 
   getUserList = () => {

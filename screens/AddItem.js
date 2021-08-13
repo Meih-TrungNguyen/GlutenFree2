@@ -28,6 +28,8 @@ import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import { Text, View, StatusBar, StyleSheet } from "react-native";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import * as Font from "expo-font";
+
 const styling = (theme) => ({
   button: {
     marginTop: 50,
@@ -71,7 +73,6 @@ export class AddItem extends Component {
       price: "",
       consumer: "1",
       quantity: "",
-      search: "",
       glutenSwitch: true,
       taxSwitch: false,
       medSwitch: false,
@@ -81,7 +82,11 @@ export class AddItem extends Component {
       valueNumber: 0,
     };
   }
-
+  componentDidMount() {
+    Font.loadAsync({
+      Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+    });
+  }
   /**this function validate the ItemName field,
    * it can not be EMPTY
    */
@@ -133,6 +138,7 @@ export class AddItem extends Component {
       glutenSwitch,
       taxSwitch,
       medSwitch,
+      id: this.counter,
     };
     firebase
       .database()
@@ -243,20 +249,7 @@ export class AddItem extends Component {
             </div>
           </Toolbar>
         </AppBar>
-        <View style={styles.textcontainer}>
-          <Text
-            style={{
-              fontFamily: "Questrial",
-              fontWeight: "1000",
-              fontSize: "30px",
-              textAlign: "left",
-              marginBottom: 15,
-            }}
-          >
-            Add Item
-          </Text>
-        </View>
-        <View style={{ margin: 30, marginTop: 0 }}>
+        <View style={{ margin: 30, marginTop: 35 }}>
           <Button
             variant="outlined"
             className={classes.buttonLeft}
@@ -275,7 +268,7 @@ export class AddItem extends Component {
                 marginBottom: 10,
               }}
             >
-              New Item
+              Add New Item
             </Text>
             <TextField
               id="name"

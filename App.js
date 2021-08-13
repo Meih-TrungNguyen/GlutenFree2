@@ -12,6 +12,9 @@ import "react-native-gesture-handler";
 import splashPic from "./assets/GlutenFreeSplash.jpg";
 import AddItem from "./screens/AddItem";
 import ViewCart from "./screens/ViewCart";
+import ViewThisCart from "./screens/ViewThisCart";
+import EditItem from "./screens/EditItem";
+
 import VerifyEmailScreen from "./screens/VerifyEmail.js";
 import RecoverScreen from "./screens/PasswordRecover";
 import LinkItem from "./screens/LinkItem";
@@ -188,10 +191,21 @@ export class App extends Component {
               component={ViewCart}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="ViewThisCart"
+              component={ViewThisCart}
+              options={{ headerShown: false }}
+            />
 
             <Stack.Screen
               name="LinkItem"
               component={LinkItem}
+              options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+              name="EditItem"
+              component={EditItem}
               options={{ headerShown: false }}
             />
             <Stack.Screen

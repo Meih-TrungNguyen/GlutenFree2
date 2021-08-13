@@ -23,8 +23,7 @@ import { withStyles } from "@material-ui/styles";
 import HomeIcon from "@material-ui/icons/Home";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import RefreshIcon from "@material-ui/icons/Refresh";
 
 import firebase from "firebase";
@@ -50,7 +49,7 @@ const styling = (theme) => ({
 /**Class Edit Item responsible to update item
  * from the Cart
  */
-export class ViewCart extends Component {
+export class ViewThisCart extends Component {
   constructor(props) {
     super(props);
 
@@ -60,6 +59,9 @@ export class ViewCart extends Component {
       open: false,
       valueNumber: 0,
     };
+  }
+  reloadApp() {
+    this.componentDidMount();
   }
   /**
    * Handle the Menu when user click on the BarApp
@@ -90,15 +92,20 @@ export class ViewCart extends Component {
     Font.loadAsync({
       Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
     });
-    const { cartNumber } = this.props.route.params;
+    const { cartnumber } = this.props.route.params;
+    console.log(cartnumber);
     const ref = firebase
       .database()
       .ref(
-        "User/" + firebase.auth().currentUser.uid + "/Carts/Cart " + cartNumber
+        "User/" + firebase.auth().currentUser.uid + "/Carts/Cart " + cartnumber
       );
+    console.log(
+      "User/" + firebase.auth().currentUser.uid + "/Carts/Cart " + cartnumber
+    );
     ref.once("value", (snap) => {
       this.setState({ list: [] });
       const { list } = this.state;
+      console.log(snap.val());
       for (let i = 1; i <= snap.val().product; i++) {
         const ref2 = firebase
           .database()
@@ -106,7 +113,7 @@ export class ViewCart extends Component {
             "User/" +
               firebase.auth().currentUser.uid +
               "/Carts/Cart " +
-              cartNumber +
+              cartnumber +
               "/Products/Product " +
               i
           );
@@ -116,18 +123,46 @@ export class ViewCart extends Component {
             price: snap2.val().price,
             quantity: snap2.val().quantity,
             total: snap2.val().price * snap2.val().quantity,
+            id: snap2.val().id,
           });
           this.setState({ list: list });
         });
       }
     });
   }
-  reloadApp() {
-    this.componentDidMount();
+
+  /**s
+   * Delete a Cart and update the total Cart count
+   * @param {Integer} cartnum
+   */
+  deleteCart(cartnum) {
+    const ref = firebase
+      .database()
+      .ref(
+        "User/" + firebase.auth().currentUser.uid + "/Carts/Cart " + cartnum
+      );
+    ref
+      .remove()
+      .then(() => {
+        const ref2 = firebase
+          .database()
+          .ref("User/" + firebase.auth().currentUser.uid);
+        ref2.once("value", (snap) => {
+          firebase
+            .database()
+            .ref("User/" + firebase.auth().currentUser.uid)
+            .update({
+              cart: snap.val().cart - 1,
+            });
+        });
+      })
+      .then(() => {
+        this.props.navigation.navigate("Home");
+      });
   }
 
   render() {
-    const { cartNumber } = this.props.route.params;
+    const { cartnumber } = this.props.route.params;
     const { classes } = this.props;
     const { list } = this.state;
 
@@ -217,7 +252,12 @@ export class ViewCart extends Component {
 
                   <ListItem.Title>
                     <TouchableOpacity
-                      onPress={() => this.props.navigation.navigate("EditItem")}
+                      onPress={() =>
+                        this.props.navigation.navigate("EditItem", {
+                          itemnum: item.id,
+                          cartnumber: cartnumber,
+                        })
+                      }
                     >
                       <Text style={(styles.buttonText, { color: "#B07F0D" })}>
                         Edit Item
@@ -245,18 +285,10 @@ export class ViewCart extends Component {
               icon={<HomeIcon />}
             />
             <BottomNavigationAction
-              label="Report"
-              onClick={() => this.props.navigation.navigate("Report")}
-              icon={<LibraryBooksIcon />}
-            />
-            <BottomNavigationAction
-              label="Add Item"
-              onClick={() => {
-                this.props.navigation.navigate("AddItem", {
-                  cartNumber: cartNumber,
-                });
-              }}
-              icon={<ShoppingCartIcon />}
+              label="Delete Cart"
+              color="red"
+              onClick={() => this.deleteCart(cartnumber)}
+              icon={<DeleteForeverIcon style={{ color: "red" }} />}
             />
           </BottomNavigation>
         </View>
@@ -271,7 +303,7 @@ export class ViewCart extends Component {
     );
   }
 }
-export default withStyles(styling)(ViewCart);
+export default withStyles(styling)(ViewThisCart);
 
 const styles = StyleSheet.create({
   screenContainer: {

@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { useFonts } from "@expo-google-fonts/raleway";
+import * as Font from "expo-font";
 import { withStyles } from "@material-ui/styles";
 import { ListItem } from "react-native-elements";
 
@@ -62,11 +62,15 @@ export class HomeScreen extends Component {
       list: [],
     };
   }
+
   cartNumber = 0;
   /**
    * Run before rendering, set state for the Cart History list to be displayed when rendered.
    */
   componentDidMount() {
+    Font.loadAsync({
+      Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+    });
     const refname = firebase
       .database()
       .ref("User/" + firebase.auth().currentUser.uid);
@@ -82,6 +86,7 @@ export class HomeScreen extends Component {
     ref.once("value", (snap) => {
       this.setState({ list: [] });
       const { list } = this.state;
+      console.log(snap.val().cart);
       for (let i = 1; i <= snap.val().cart; i++) {
         const ref2 = firebase
           .database()
@@ -90,6 +95,7 @@ export class HomeScreen extends Component {
           list.push({
             Date: snap2.val().createDate,
             price: snap2.val().total,
+            id: snap2.val().cartID,
           });
           this.setState({ list: list.reverse() });
           console.log(this.state.list);
@@ -119,6 +125,7 @@ export class HomeScreen extends Component {
   onLogout = () => {
     firebase.auth().signOut();
   };
+
   /**
    * Retrieve and Update the total of carts and add new Cart to the Database
    */
@@ -142,6 +149,7 @@ export class HomeScreen extends Component {
             ),
             total,
             product,
+            cartID: this.cartNumber,
           };
           firebase
             .database()
@@ -287,11 +295,13 @@ export class HomeScreen extends Component {
 
                   <ListItem.Title>
                     <TouchableOpacity
-                      onPress={() => this.props.navigation.navigate("")}
+                      onPress={() => {
+                        this.props.navigation.navigate("ViewThisCart", {
+                          cartnumber: item.id,
+                        });
+                      }}
                     >
-                      <Text style={(styles.buttonText, { color: "#B07F0D" })}>
-                        ViewCart
-                      </Text>
+                      <Text style={{ color: "#B07F0D" }}>ViewCart</Text>
                     </TouchableOpacity>
                   </ListItem.Title>
                 </ListItem.Content>

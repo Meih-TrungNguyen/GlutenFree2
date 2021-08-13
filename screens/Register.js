@@ -16,7 +16,7 @@ import { View, StyleSheet } from "react-native";
 import firebase from "firebase";
 import { validateAll } from "indicative/validator";
 import { withStyles } from "@material-ui/styles";
-import { useFonts } from "@expo-google-fonts/raleway";
+import * as Font from "expo-font";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
@@ -64,6 +64,11 @@ export class Register extends Component {
     };
 
     this.onSignUp = this.onSignUp.bind(this);
+  }
+  componentDidMount() {
+    Font.loadAsync({
+      Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+    });
   }
   /**
    * Handle Click for the Password TextField, SHow/Hide Password

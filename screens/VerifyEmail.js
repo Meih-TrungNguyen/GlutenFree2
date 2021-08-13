@@ -3,8 +3,15 @@ import firebase from "firebase";
 import { View, Image, Text } from "react-native";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
+import { useFonts } from "@expo-google-fonts/raleway";
 
 export default function VerifyEmail() {
+  /**
+   * Load the Google Questrial Font for the project
+   */
+  let [fontsLoaded, error] = useFonts({
+    Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+  });
   const onLogout = () => {
     firebase.auth().signOut();
   };

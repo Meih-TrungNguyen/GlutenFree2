@@ -150,7 +150,6 @@ export class PasswordRecover extends Component {
         >
           Reset Password
         </Button>
-        {/* TODO: Add don't have an account? register */}
         <View></View>
       </View>
     );

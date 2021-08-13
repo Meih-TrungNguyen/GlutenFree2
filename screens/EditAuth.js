@@ -17,7 +17,7 @@ import {
   Menu,
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import { useFonts } from "@expo-google-fonts/raleway";
+import * as Font from "expo-font";
 import { withStyles } from "@material-ui/styles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -62,6 +62,11 @@ export class EditAuth extends Component {
       showPassword: false,
       valueNumber: 0,
     };
+  }
+  componentDidMount() {
+    Font.loadAsync({
+      Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+    });
   }
   /**
    * Log the user out

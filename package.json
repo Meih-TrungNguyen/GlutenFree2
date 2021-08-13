@@ -8,6 +8,9 @@
     "eject": "expo eject",
     "test": "jest"
   },
+  "rnpm": {
+    "assets": ["./assets/fonts"]
+  },
   "dependencies": {
     "@expo-google-fonts/dev": "^0.2.0",
     "@expo-google-fonts/raleway": "^0.2.0",

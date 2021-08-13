@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Text, View, StyleSheet } from "react-native";
 import { validateAll } from "indicative/validator";
-import { useFonts } from "@expo-google-fonts/raleway";
+import * as Font from "expo-font";
 import { withStyles } from "@material-ui/styles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -43,6 +43,12 @@ export class Login extends Component {
       showPassword: false,
     };
     this.onSignIn = this.onSignIn.bind(this);
+  }
+
+  componentDidMount() {
+    Font.loadAsync({
+      Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+    });
   }
   /**
    * Handle Click for the Password TextField, SHow/Hide Password

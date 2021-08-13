@@ -17,7 +17,7 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import { useFonts } from "@expo-google-fonts/raleway";
+import * as Font from "expo-font";
 import { withStyles } from "@material-ui/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
@@ -73,6 +73,11 @@ export class EditProfile extends Component {
     };
 
     this.onSignUp = this.onSignUp.bind(this);
+  }
+  componentDidMount() {
+    Font.loadAsync({
+      Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
+    });
   }
   /**
    * Log the user out
