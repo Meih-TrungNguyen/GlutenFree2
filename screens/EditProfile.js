@@ -154,7 +154,7 @@ export class EditProfile extends Component {
         <AppBar style={{ background: "#FDB945" }}>
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Change Auth Info
+              Change Profile Info
             </Typography>
             <div>
               <IconButton
@@ -388,7 +388,6 @@ const styles = StyleSheet.create({
   },
   textcontainer: {
     marginTop: 60,
-    marginLeft: 30,
     lineHeight: 1.4,
   },
   textBoxView: {

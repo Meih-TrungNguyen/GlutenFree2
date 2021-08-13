@@ -86,6 +86,19 @@ export class AddItem extends Component {
     Font.loadAsync({
       Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
     });
+    this.setState({
+      name: "",
+      price: "",
+      consumer: "1",
+      quantity: "",
+      glutenSwitch: true,
+      taxSwitch: false,
+      medSwitch: false,
+      error: {},
+      anchorEl: null,
+      open: false,
+      valueNumber: 0,
+    });
   }
   /**this function validate the ItemName field,
    * it can not be EMPTY
@@ -165,6 +178,7 @@ export class AddItem extends Component {
             product: this.counter,
           })
           .then(() => {
+            this.reloadApp();
             alert("New Item Added");
           })
           .catch((error) => {
@@ -174,6 +188,9 @@ export class AddItem extends Component {
       .catch((error) => {
         console.log(error);
       });
+  }
+  reloadApp() {
+    this.componentDidMount();
   }
 
   /**

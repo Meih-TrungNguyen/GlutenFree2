@@ -180,7 +180,7 @@ export class ViewCart extends Component {
         </AppBar>
 
         <View style={{ flex: 1, margin: 30 }}>
-          <ScrollView style={{ marginTop: 20 }}>
+          <ScrollView style={{ marginTop: 40 }}>
             {list.reverse().map((item, i) => (
               <ListItem
                 key={i}
@@ -196,12 +196,12 @@ export class ViewCart extends Component {
                 >
                   <ListItem.Title>
                     <Text style={{ fontFamily: "Questrial", fontSize: 16 }}>
-                      Name:{item.name}
+                      Name: {item.name}
                     </Text>
                   </ListItem.Title>
                   <ListItem.Title>
                     <Text style={{ fontFamily: "Questrial", fontSize: 16 }}>
-                      Price:{item.price}
+                      Price: {item.price}$
                     </Text>
                   </ListItem.Title>
                   <ListItem.Title>
