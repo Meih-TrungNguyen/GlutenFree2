@@ -9,7 +9,9 @@
     "test": "jest"
   },
   "rnpm": {
-    "assets": ["./assets/fonts"]
+    "assets": [
+      "./assets/fonts"
+    ]
   },
   "dependencies": {
     "@expo-google-fonts/dev": "^0.2.0",
@@ -31,7 +33,7 @@
     "expo": "~41.0.1",
     "expo-font": "^9.1.0",
     "expo-status-bar": "~1.0.4",
-    "expo-updates": "^0.8.4",
+    "expo-updates": "~0.5.4",
     "firebase": "^8.6.5",
     "formik": "^2.2.9",
     "formik-yup": "0.0.5",
