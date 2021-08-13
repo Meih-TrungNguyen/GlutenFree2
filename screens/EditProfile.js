@@ -1,18 +1,64 @@
 import React, { Component } from "react";
-import {
-  View,
-  Picker,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  ImageBackground,
-} from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import firebase from "firebase";
 import { validateAll } from "indicative/validator";
 import "firebase/firestore";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Button,
+  Menu,
+  TextField,
+  FormControl,
+  Select,
+  MenuItem,
+  FormHelperText,
+} from "@material-ui/core";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import { useFonts } from "@expo-google-fonts/raleway";
+import { withStyles } from "@material-ui/styles";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import HomeIcon from "@material-ui/icons/Home";
 
-export class Register extends Component {
+const styling = (theme) => ({
+  title: {
+    flexGrow: 1,
+  },
+  button: {
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 60,
+    fontFamily: "Questrial",
+    fontWeight: "600",
+    backgroundColor: "#FFCD29",
+  },
+  stickToBottom: {
+    marginLeft: -30,
+    width: "100%",
+    position: "fixed",
+    bottom: 0,
+  },
+  flexRowTextField: {
+    marginRight: 10,
+    marginBottom: 10,
+  },
+  textField: {
+    marginBottom: 10,
+  },
+  formControl: {
+    minWidth: 157,
+    height: 50,
+  },
+  selectEmpty: {
+    marginRight: 10,
+  },
+});
+
+export class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,18 +67,47 @@ export class Register extends Component {
       city: "null",
       province: "null",
       error: {},
+      anchorEl: null,
+      open: false,
+      valueNumber: 0,
     };
 
     this.onSignUp = this.onSignUp.bind(this);
   }
+  /**
+   * Log the user out
+   */
+  onLogout = () => {
+    firebase.auth().signOut();
+  };
+
+  /**
+   * Handle the Menu when user click on the BarApp
+   * @param {event} event
+   */
+  handleMenu = (event) => {
+    this.setState({
+      anchorEl: event.currentTarget,
+      open: Boolean(event.currentTarget),
+    });
+  };
+
+  /**
+   * Close the Menu when user tap anywhere on the screen
+   */
+  handleClose = () => {
+    this.setState({ anchorEl: null, open: false });
+  };
 
   validate = async (data) => {
     const rules = {
       firstname: "required|string",
+      lastname: "required|string",
     };
 
     const message = {
-      "firstname.required": "Name field cannot be empty",
+      "firstname.required": "Name is required",
+      "lastname.required": "Name is required",
     };
     try {
       await validateAll(data, rules, message).then(() => this.onSignUp());
@@ -67,167 +142,249 @@ export class Register extends Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <ImageBackground
-        source={require("../assets/Home-screen.jpg")}
-        style={styles.backgroundImage}
-      >
-        <View style={styles.screenContainer}>
-          {this.state.error["firstname"] && (
-            <Text
-              style={{
-                fontSize: 15,
-                color: "red",
-                marginBottom: 2,
-                paddingLeft: 10,
-              }}
-            >
-              {this.state.error["firstname"]}
-            </Text>
-          )}
-          <View style={styles.textBoxView}>
-            <TextInput
-              style={styles.textBox}
-              placeholder="First name"
-              placeholderTextColor="black"
-              onChangeText={(firstname) => this.setState({ firstname })}
-            />
-            <View style={styles.space}></View>
-            <TextInput
-              style={styles.textBox}
-              placeholder="Last name"
-              placeholderTextColor="black"
-              onChangeText={(lastname) => this.setState({ lastname })}
-            />
-          </View>
-
-          <View style={styles.pickerView}>
-            <Picker
-              style={styles.picker}
-              selectedValue={this.state.city}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ city: itemValue })
-              }
-            >
-              <Picker.Item label="City" value=" City " />
-              <Picker.Item label="Barrie" value="Barrie " />
-              <Picker.Item label="Belleville" value="Belleville" />
-              <Picker.Item label="Brampton" value="Brampton" />
-              <Picker.Item label="Brant" value="Brant" />
-              <Picker.Item label="Brantford" value="Brantford" />
-              <Picker.Item label="Brockville" value="Brockville" />
-              <Picker.Item label="Burlington" value="Burlington" />
-              <Picker.Item label="Cambridge" value="Cambridge" />
-              <Picker.Item
-                label="Clarence-Rockland"
-                value="Clarence-Rockland"
-              />
-              <Picker.Item label="Cornwall" value="Cornwall" />
-              <Picker.Item label="Dryden" value="Dryden" />
-              <Picker.Item label="Elliot Lake" value="Elliot Lake" />
-              <Picker.Item label="Greater Sudbury" value="Greater Sudbury" />
-              <Picker.Item label="Guelph" value="Guelph" />
-              <Picker.Item label="Haldimand County" value="Haldimand County" />
-              <Picker.Item label="Hamilton" value="Hamilton" />
-              <Picker.Item label="Kawartha Lakes" value="Kawartha Lakes" />
-              <Picker.Item label="Kenora" value="Kenora" />
-              <Picker.Item label="Kingston" value="Kingston" />
-              <Picker.Item label="Kitchener" value="Kitchener" />
-              <Picker.Item label="London" value="London" />
-              <Picker.Item label="Markham" value="Markham" />
-              <Picker.Item label="Mississauga" value="Mississauga" />
-              <Picker.Item label="Niagara Falls" value="Niagara Falls" />
-              <Picker.Item label="Norfolk County" value="Norfolk County" />
-              <Picker.Item label="North Bay" value="North Bay" />
-              <Picker.Item label="Orillia" value="Orillia" />
-              <Picker.Item label="Oshawa" value="Oshawa" />
-              <Picker.Item label="Ottawa" value="Ottawa" />
-              <Picker.Item label="Owen Sound" value="Owen Sound" />
-              <Picker.Item label="Pembroke" value="Pembroke" />
-              <Picker.Item label="Peterborough" value="Peterborough" />
-              <Picker.Item label="Pickering" value="Pickering" />
-              <Picker.Item label="Port Colborne" value="Port Colborne" />
-              <Picker.Item
-                label="Prince Edward C."
-                value="Prince Edward County"
-              />
-              <Picker.Item label="Quinte West" value="Quinte West" />
-              <Picker.Item label="Richmond Hill" value="CRichmond Hillity" />
-              <Picker.Item label="Sarnia" value="Sarnia" />
-              <Picker.Item label="Sault Ste. Marie" value="Sault Ste. Marie" />
-              <Picker.Item label="St. Catharines" value="St. Catharines" />
-              <Picker.Item label="St. Thomas" value="St. Thomas" />
-              <Picker.Item label="Stratford" value="Stratford" />
-              <Picker.Item
-                label="Temiskaming Shores"
-                value="Temiskaming Shores"
-              />
-              <Picker.Item label="Thorold" value="Thorold" />
-              <Picker.Item label="Thunder Bay" value="Thunder Bay" />
-              <Picker.Item label="Timmins" value="Timmins" />
-              <Picker.Item label="Toronto" value="Toronto" />
-              <Picker.Item label="Vaughan" value="Vaughan" />
-              <Picker.Item label="Waterloo" value="Waterloo" />
-              <Picker.Item label="Welland" value="Welland" />
-              <Picker.Item label="Windsor" value="Windsor" />
-              <Picker.Item label="Woodstock" value="Woodstock" />
-            </Picker>
-
-            <View style={styles.space}></View>
-            <Picker
-              style={styles.picker}
-              selectedValue={this.state.province}
-              onValueChange={(itemValue, itemIndex) =>
-                this.setState({ province: itemValue })
-              }
-            >
-              <Picker.Item label="Province" />
-              <Picker.Item label="Alberta" value="Alberta" />
-              <Picker.Item label="British Columbia" value="British Columbia" />
-              <Picker.Item label="Manitoba" value="Manitoba" />
-              <Picker.Item label="New Brunswick" value="New Brunswick" />
-              <Picker.Item label="N.L" value="Newfoundland and Labrador" />
-              <Picker.Item label="N.W.T." value="Northwest Territories" />
-              <Picker.Item label="Nova Scotia" value="Nova Scotia" />
-              <Picker.Item label="Nunavut" value="Nunavut" />
-              <Picker.Item label="Ontario" value="Ontario" />
-              <Picker.Item label="P.E.I" value="Prince Edward Island" />
-              <Picker.Item label="Quebec" value="Quebec" />
-              <Picker.Item label="Saskatchewan" value="Saskatchewan" />
-              <Picker.Item label="Yukon" value="Yukon" />
-            </Picker>
-          </View>
-
-          <View style={styles.buttons}>
-            <TouchableOpacity onPress={() => this.validate(this.state)}>
-              <Text style={styles.textElement}>Save changes</Text>
-            </TouchableOpacity>
-          </View>
+      <View style={{ flex: 1, margin: 30 }}>
+        <AppBar style={{ background: "#FDB945" }}>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              Change Auth Info
+            </Typography>
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={this.state.open}
+                onClose={this.handleClose}
+              >
+                <MenuItem
+                  onClick={() => this.props.navigation.navigate("EditAuth")}
+                >
+                  Change Account Info
+                </MenuItem>
+                <MenuItem
+                  onClick={() => this.props.navigation.navigate("EditProfile")}
+                >
+                  Edit profile
+                </MenuItem>
+                <MenuItem onClick={() => this.onLogout()}>Logout</MenuItem>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <View style={styles.textcontainer}>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontSize: "25px",
+              textAlign: "left",
+            }}
+          >
+            Update your account information.
+          </Text>
         </View>
-      </ImageBackground>
+        <View style={{ flexDirection: "row", marginTop: 30 }}>
+          <TextField
+            id="fname"
+            label="First name"
+            placeholder="First name"
+            variant="outlined"
+            onChange={(event) => {
+              const { value } = event.target;
+              this.setState({ firstname: value });
+            }}
+            error={!!this.state.error["firstname"]}
+            helperText={this.state.error["firstname"]}
+            size="small"
+            className={classes.flexRowTextField}
+          />
+          <TextField
+            id="lname"
+            label="Last name"
+            placeholder="Last name"
+            variant="outlined"
+            onChange={(event) => {
+              const { value } = event.target;
+              this.setState({ lastname: value });
+            }}
+            error={!!this.state.error["lastname"]}
+            helperText={this.state.error["lastname"]}
+            size="small"
+            className={classes.textField}
+          />
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <FormControl className={classes.formControl} size="small">
+            <Select
+              variant="outlined"
+              value={this.state.city}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ city: value });
+              }}
+              displayEmpty
+              className={classes.selectEmpty}
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value="" disabled>
+                City
+              </MenuItem>
+              <MenuItem value={"Barrie"}>Barrie</MenuItem>
+              <MenuItem value={"Belleville"}>Belleville</MenuItem>
+              <MenuItem value={"Brampton"}>Brampton</MenuItem>
+              <MenuItem value={"Brant"}>Brant</MenuItem>
+              <MenuItem value={"Brantford"}>Brantford</MenuItem>
+              <MenuItem value={"Brockville"}>Brockville</MenuItem>
+              <MenuItem value={"Burlington"}>Burlington</MenuItem>
+              <MenuItem value={"Cambridge"}>Cambridge</MenuItem>
+              <MenuItem value={"Clarence-Rockland"}>Clarence-Rockland</MenuItem>
+              <MenuItem value={"Cornwall"}>Cornwall</MenuItem>
+              <MenuItem value={"Dryden"}>Dryden</MenuItem>
+              <MenuItem value={"Elliot Lake"}>Elliot Lake</MenuItem>
+              <MenuItem value={"Greater Sudbury"}>Greater Sudbury</MenuItem>
+              <MenuItem value={"Guelph"}>Guelph</MenuItem>
+              <MenuItem value={"Haldimand County"}>Haldimand County</MenuItem>
+              <MenuItem value={"Hamilton"}>Hamilton</MenuItem>
+              <MenuItem value={"Kawartha Lakes"}>Kawartha Lakes</MenuItem>
+              <MenuItem value={"Kenora"}>Kenora</MenuItem>
+              <MenuItem value={"Kingston"}>Kingston</MenuItem>
+              <MenuItem value={"Kitchener"}>Kitchener</MenuItem>
+              <MenuItem value={"London"}>London</MenuItem>
+              <MenuItem value={"Markham"}>Markham</MenuItem>
+              <MenuItem value={"Mississauga"}>Mississauga</MenuItem>
+              <MenuItem value={"Niagara Falls"}>Niagara Falls</MenuItem>
+              <MenuItem value={"Norfolk County"}>Norfolk County</MenuItem>
+              <MenuItem value={"North Bay"}>North Bay</MenuItem>
+              <MenuItem value={"Orillia"}>Orillia</MenuItem>
+              <MenuItem value={"Oshawa"}>Oshawa</MenuItem>
+              <MenuItem value={"Ottawa"}>Ottawa</MenuItem>
+              <MenuItem value={"Owen Sound"}>Owen Sound</MenuItem>
+              <MenuItem value={"Pembroke"}>Pembroke</MenuItem>
+              <MenuItem value={"Peterborough"}>Peterborough</MenuItem>
+              <MenuItem value={"Pickering"}>Pickering</MenuItem>
+              <MenuItem value={"Port Colborne"}>Port Colborne</MenuItem>
+              <MenuItem value={"Prince Edward C."}>
+                Prince Edward County
+              </MenuItem>
+              <MenuItem value={"Quinte West"}>Quinte West</MenuItem>
+              <MenuItem value={"Richmond Hill"}>CRichmond Hillity</MenuItem>
+              <MenuItem value={"Sarnia"}>Sarnia</MenuItem>
+              <MenuItem value={"Sault Ste. Marie"}>Sault Ste. Marie</MenuItem>
+              <MenuItem value={"St. Catharines"}>St. Catharines</MenuItem>
+              <MenuItem value={"St. Thomas"}>St. Thomas</MenuItem>
+              <MenuItem value={"Stratford"}>Stratford</MenuItem>
+              <MenuItem value={"Temiskaming Shores"}>
+                Temiskaming Shores
+              </MenuItem>
+              <MenuItem value={"Thorold"}>Thorold</MenuItem>
+              <MenuItem value={"Thunder Bay"}>Thunder Bay</MenuItem>
+              <MenuItem value={"Timmins"}>Timmins</MenuItem>
+              <MenuItem value={"Toronto"}>Toronto</MenuItem>
+              <MenuItem value={"Vaughan"}>Vaughan</MenuItem>
+              <MenuItem value={"Waterloo"}>Waterloo</MenuItem>
+              <MenuItem value={"Welland"}>Welland</MenuItem>
+              <MenuItem value={"Windsor"}>Windsor</MenuItem>
+              <MenuItem value={"Woodstock"}>Woodstock</MenuItem>
+            </Select>
+            <FormHelperText>City</FormHelperText>
+          </FormControl>
+
+          <View style={styles.space}></View>
+          <FormControl className={classes.formControl} size="small">
+            <Select
+              variant="outlined"
+              value={this.state.province}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ province: value });
+              }}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+            >
+              <MenuItem value="" disabled>
+                Province
+              </MenuItem>
+              <MenuItem value={"Alberta"}>Alberta</MenuItem>
+              <MenuItem value={"British Columbia"}>British Columbia</MenuItem>
+              <MenuItem value={"Manitoba"}>Manitoba</MenuItem>
+              <MenuItem value={"New Brunswick"}>New Brunswick</MenuItem>
+              <MenuItem value={"N.L"}>Newfoundland and Labrador</MenuItem>
+              <MenuItem value={"N.W.T."}>Northwest Territories</MenuItem>
+              <MenuItem value={"Nova Scotia"}>Nova Scotia</MenuItem>
+              <MenuItem value={"Nunavut"}>Nunavut</MenuItem>
+              <MenuItem value={"Ontario"}>Ontario</MenuItem>
+              <MenuItem value={"P.E.I"}>Prince Edward Island</MenuItem>
+              <MenuItem value={"Quebec"}>Quebec</MenuItem>
+              <MenuItem value={"Saskatchewan"}>Saskatchewan</MenuItem>
+              <MenuItem value={"Yukon"}>Yukon</MenuItem>
+            </Select>
+            <FormHelperText>Province</FormHelperText>
+          </FormControl>
+        </View>
+        <Button
+          variant="contained"
+          className={classes.button}
+          onClick={() => this.validate(this.state)}
+        >
+          Update Account
+        </Button>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          <BottomNavigation
+            value={this.state.valueNumber}
+            onChange={(event) => {
+              const { value } = event.target;
+              this.setState({ valueNumber: value });
+            }}
+            showLabels
+            className={classes.stickToBottom}
+          >
+            <BottomNavigationAction
+              label="Home"
+              onClick={() => this.props.navigation.navigate("Home")}
+              icon={<HomeIcon />}
+            />
+            <BottomNavigationAction
+              label="Report"
+              onClick={() => this.props.navigation.navigate("Report")}
+              icon={<LibraryBooksIcon />}
+            />
+          </BottomNavigation>
+        </View>
+      </View>
     );
   }
 }
+export default withStyles(styling)(EditProfile);
+
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     paddingTop: 20,
     alignItems: "center",
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  },
-  buttons: {
-    backgroundColor: "grey",
-    fontSize: 200,
-    height: 50,
-    width: 200,
-  },
-  space: {
-    width: 0,
-    height: 10,
+  textcontainer: {
+    marginTop: 60,
+    marginLeft: 30,
+    lineHeight: 1.4,
   },
   textBoxView: {
     flexDirection: "row",
@@ -236,10 +393,6 @@ const styles = StyleSheet.create({
   testView: {
     flexDirection: "row",
     marginBottom: 20,
-  },
-  pickerView: {
-    flexDirection: "row",
-    marginBottom: 40,
   },
   textBox: {
     marginHorizontal: 10,
@@ -253,30 +406,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
   },
-  eBox: {
-    height: 60,
-    width: 410,
-    marginHorizontal: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    flex: 1,
-    backgroundColor: "white",
-    color: "black",
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
-  },
-  picker: {
-    width: 190,
-    height: 200,
-    marginHorizontal: 8,
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
-  },
   textElement: {
     fontSize: 25,
     marginTop: 8,
@@ -284,5 +413,3 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
-
-export default Register;

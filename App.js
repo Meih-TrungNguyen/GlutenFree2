@@ -8,18 +8,14 @@ import HomeScreen from "./screens/Home";
 import RegisterScreen from "./screens/Register";
 import LoginScreen from "./screens/Login";
 import LandingScreen from "./screens/Landing";
-import NewCart from "./screens/NewCart";
 import "react-native-gesture-handler";
 import splashPic from "./assets/GlutenFreeSplash.jpg";
 import AddItem from "./screens/AddItem";
 import ViewCart from "./screens/ViewCart";
-import History from "./screens/History";
 import VerifyEmailScreen from "./screens/VerifyEmail.js";
 import RecoverScreen from "./screens/PasswordRecover";
 import LinkItem from "./screens/LinkItem";
 import Report from "./screens/Report";
-import EditItem from "./screens/EditItem";
-import Setting from "./screens/Setting";
 import EditProfile from "./screens/EditProfile";
 import EditAuth from "./screens/EditAuth";
 
@@ -39,10 +35,15 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
+/**
+ * Run FlashScreen
+ * @param {navigation} param0
+ * @returns View for SplashScreen
+ */
 function splashScreen({ navigation }) {
   setTimeout(() => {
     navigation.replace("Landing"); //stack name
-  }, 0);
+  }, 100);
 
   return (
     <View
@@ -66,6 +67,9 @@ export class App extends Component {
     };
   }
 
+  /**
+   * Run before rendering to check ì the user are logged in or not
+   */
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
@@ -82,6 +86,11 @@ export class App extends Component {
       }
     });
   }
+
+  /**
+   * Render the UI, users are navigated to different Screen depend on their state.
+   * @returns View
+   */
   render() {
     const { loggedIn, emailVerified } = this.state;
     if (!loggedIn) {
@@ -164,17 +173,50 @@ export class App extends Component {
       return (
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name="NewCart" component={NewCart} />
-            <Stack.Screen name="AddItem" component={AddItem} />
-            <Stack.Screen name="ViewCart" component={ViewCart} />
-            <Stack.Screen name="History" component={History} />
-            <Stack.Screen name="LinkItem" component={LinkItem} />
-            <Stack.Screen name="Setting" component={Setting} />
-            <Stack.Screen name="Report" component={Report} />
-            <Stack.Screen name="EditItem" component={EditItem} />
-            <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="EditAuth" component={EditAuth} />
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AddItem"
+              component={AddItem}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ViewCart"
+              component={ViewCart}
+              options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+              name="LinkItem"
+              component={LinkItem}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Report"
+              component={Report}
+              options={{
+                title: "",
+                headerStyle: {
+                  backgroundColor: "#F2F2F2",
+                  elevation: 0,
+                  shadowOpacity: 0,
+                  borderBottomWidth: 0,
+                },
+              }}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfile}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="EditAuth"
+              component={EditAuth}
+              options={{ headerShown: false }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       );

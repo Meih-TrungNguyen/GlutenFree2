@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import {
   Button,
   TextField,
-  FormControl,
   Select,
   MenuItem,
   FormHelperText,
+  InputAdornment,
+  InputLabel,
+  FormControl,
+  IconButton,
+  OutlinedInput,
 } from "@material-ui/core";
 import { Text } from "react-native";
 import { View, StyleSheet } from "react-native";
@@ -13,6 +17,8 @@ import firebase from "firebase";
 import { validateAll } from "indicative/validator";
 import { withStyles } from "@material-ui/styles";
 import { useFonts } from "@expo-google-fonts/raleway";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import "firebase/firestore";
 
@@ -54,11 +60,29 @@ export class Register extends Component {
       province: "province",
       error: {},
       cart: 0,
+      showPassword: false,
     };
 
     this.onSignUp = this.onSignUp.bind(this);
   }
-
+  /**
+   * Handle Click for the Password TextField, SHow/Hide Password
+   */
+  handleClickShowPassword = () => {
+    this.setState((prevState) => ({
+      showPassword: !prevState.showPassword,
+    }));
+  };
+  /**
+   * Handle Click for the Password TextField, SHow/Hide Password
+   */
+  handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+  /**
+   * Validating data from user input
+   * @param {this.state} data
+   */
   validate = async (data) => {
     const rules = {
       firstname: "required|string",
@@ -68,13 +92,13 @@ export class Register extends Component {
     };
 
     const message = {
-      "firstname.required": "First name is required",
-      "lastname.required": "Last name is required",
+      "firstname.required": "Name is required",
+      "lastname.required": "Name is required",
       "email.required": "Email is required",
       "password.required": "Password is required",
-      "email.email": "The email syntax is incorrect",
+      "email.email": "Email syntax is incorrect",
       "password.confirmed": "The password does not match",
-      "password.min": "The password should be longer than 6 characters",
+      "password.min": "Password should be longer than 6 characters",
     };
     try {
       await validateAll(data, rules, message).then(() => this.onSignUp());
@@ -95,11 +119,12 @@ export class Register extends Component {
         this.setState({
           error: formattedErrors,
         });
-        console.log(this.state);
       }
     }
   };
-
+  /**
+   * Sign Up for new User, create a new user in the Database as well as saving their input data.
+   */
   onSignUp() {
     const { email, password, firstname, lastname, city, province, cart } =
       this.state;
@@ -190,35 +215,77 @@ export class Register extends Component {
         />
 
         <View>
-          <TextField
-            id="password"
-            label="Password"
-            placeholder="Enter password"
+          <FormControl
+            className={classes.textField}
             variant="outlined"
-            onChange={(event) => {
-              const { value } = event.target;
-              this.setState({ password: value });
-            }}
+            size="small"
             error={!!this.state.error["password"]}
             helperText={this.state.error["password"]}
-            size="small"
+          >
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <OutlinedInput
+              id="password"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ password: value });
+              }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={this.handleClickShowPassword}
+                    onMouseDown={this.handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {this.state.showPassword ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+              labelWidth={70}
+            />
+          </FormControl>
+          <FormControl
             className={classes.textField}
-          />
-          <TextField
-            id="password2"
-            label="Password Confirmation"
-            placeholder="Password Confirmation"
             variant="outlined"
-            onChange={(event) => {
-              const { value } = event.target;
-              this.setState({ password_confirmation: value });
-            }}
             size="small"
-            className={classes.textField}
-          />
+          >
+            <InputLabel htmlFor="password2">Confirm Password</InputLabel>
+            <OutlinedInput
+              id="password2"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password_confirmation}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ password_confirmation: value });
+              }}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={this.handleClickShowPassword}
+                    onMouseDown={this.handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {this.state.showPassword ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+              labelWidth={70}
+            />
+          </FormControl>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} size="small">
             <Select
               variant="outlined"
               value={this.state.city}
@@ -294,7 +361,7 @@ export class Register extends Component {
           </FormControl>
 
           <View style={styles.space}></View>
-          <FormControl className={classes.formControl}>
+          <FormControl className={classes.formControl} size="small">
             <Select
               variant="outlined"
               value={this.state.province}
@@ -345,21 +412,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     alignItems: "center",
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  },
-  buttons: {
-    backgroundColor: "grey",
-    fontSize: 200,
-    height: 50,
-    width: 200,
-  },
-  space: {
-    width: 0,
-    height: 10,
-  },
+
   textBoxView: {
     flexDirection: "row",
     marginBottom: 40,
@@ -375,30 +428,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     color: "black",
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
-  },
-  eBox: {
-    height: 60,
-    width: 410,
-    marginHorizontal: 10,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    flex: 1,
-    backgroundColor: "white",
-    color: "black",
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 4 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
-  },
-  picker: {
-    width: 190,
-    height: 200,
-    marginHorizontal: 8,
-    backgroundColor: "white",
     shadowColor: "#000",
     shadowOffset: { width: 2, height: 4 },
     shadowOpacity: 0.8,

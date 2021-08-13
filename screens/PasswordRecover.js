@@ -34,6 +34,11 @@ export class PasswordRecover extends Component {
 
     this.forgotPassword = this.forgotPassword.bind(this);
   }
+
+  /**
+   * Validating data from user input
+   * @param {this.state} data
+   */
   validate = async (data) => {
     const rules = {
       email: "required|email",
@@ -66,6 +71,9 @@ export class PasswordRecover extends Component {
     }
   };
 
+  /**
+   * Send an email to user to have them reset their Password
+   */
   forgotPassword() {
     const { email } = this.state;
     firebase

@@ -1,18 +1,13 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import {
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-  Image,
-} from "react-native";
+import { Text, View, StyleSheet, ImageBackground } from "react-native";
 import { useFonts } from "@expo-google-fonts/raleway";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function Landing({ navigation }) {
+  /**
+   * Load the Google Questrial Font for the project
+   */
   let [fontsLoaded, error] = useFonts({
     Questrial: require("../assets/fonts/Questrial-Regular.ttf"),
   });

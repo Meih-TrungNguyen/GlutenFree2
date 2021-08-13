@@ -9,13 +9,15 @@ export default function VerifyEmail() {
     firebase.auth().signOut();
   };
   const classes = useStyles();
-
+  /**
+   * Send a verify Email to users
+   */
   const verify = () => {
     firebase
       .auth()
       .currentUser.sendEmailVerification()
       .then((result) => {
-        alert("Verify Email Sent");
+        alert("Email sent, please check you inbox/spam");
         console.log(result);
       })
       .catch((error) => {
@@ -50,7 +52,7 @@ export default function VerifyEmail() {
             marginBottom: 15,
           }}
         >
-          Ghi dzo
+          Your email hasn't been verified yet. Here is some bread.
         </Text>
       </View>
       <Button
@@ -58,7 +60,7 @@ export default function VerifyEmail() {
         className={classes.button}
         onClick={() => verify()}
       >
-        Send Verify Email
+        Verify Email
       </Button>
       <Button
         variant="contained"

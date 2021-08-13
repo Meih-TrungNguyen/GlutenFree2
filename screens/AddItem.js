@@ -1,79 +1,109 @@
 import React, { Component } from "react";
 import { SearchBar } from "react-native-elements";
+import { validateAll } from "indicative/validator";
+import { useFonts } from "@expo-google-fonts/raleway";
+import { withStyles } from "@material-ui/styles";
 import firebase from "firebase";
-
 import {
-  KeyboardAvoidingView,
-  Text,
-  Platform,
-  View,
-  TouchableOpacity,
-  StatusBar,
-  TextInput,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Button,
+  TextField,
+  MenuItem,
+  Menu,
   Switch,
-  ImageBackground,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
-import {
-  Ionicons,
-  AntDesign,
-  Entypo,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+  Fab,
+} from "@material-ui/core";
+import HomeIcon from "@material-ui/icons/Home";
+import DoneIcon from "@material-ui/icons/Done";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import AddIcon from "@material-ui/icons/Add";
+import PublishIcon from "@material-ui/icons/Publish";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import { Text, View, StatusBar, StyleSheet } from "react-native";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+const styling = (theme) => ({
+  button: {
+    marginTop: 50,
+    marginLeft: 70,
+    marginRight: 70,
+    fontFamily: "Questrial",
+    fontWeight: "600",
+    backgroundColor: "#FFCD29",
+  },
+  textBox: {
+    marginBottom: 10,
+  },
+  stickToBottom: {
+    width: "100%",
+    position: "fixed",
+    bottom: 0,
+  },
+  title: {
+    flexGrow: 1,
+  },
+  doneIcon: {
+    position: "fixed",
+    bottom: 200,
+    left: 50,
+  },
+  addIcon: {
+    position: "fixed",
+    bottom: 200,
+    right: 50,
+  },
+  icon: {
+    marginRight: 5,
+  },
+});
 
-export default class AddItem extends Component {
+export class AddItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      nameError: "",
       price: "",
       consumer: "1",
       quantity: "",
       search: "",
-      glutenSwitch: false,
+      glutenSwitch: true,
       taxSwitch: false,
       medSwitch: false,
+      error: {},
+      anchorEl: null,
+      open: false,
+      valueNumber: 0,
     };
   }
-
-  updateSearch = (search) => {
-    this.setState({ search });
-  };
-
-  GlutenSwitch = (value) => {
-    if (this.state.glutenSwitch) {
-      this.setState({ glutenSwitch: false });
-    } else {
-      this.setState({ glutenSwitch: true });
-    }
-  };
-  TaxSwitch = (value) => {
-    if (this.state.taxSwitch) {
-      this.setState({ taxSwitch: false });
-    } else {
-      this.setState({ taxSwitch: true });
-    }
-  };
-  MedSwitch = (value) => {
-    if (this.state.medSwitch) {
-      this.setState({ medSwitch: false });
-    } else {
-      this.setState({ medSwitch: true });
-    }
-  };
 
   /**this function validate the ItemName field,
    * it can not be EMPTY
    */
-  nameValidator() {
-    if (this.state.name == "") {
-      this.setState({ nameError: "Field can not be Empty" });
-    } else {
-      this.setState({ nameError: "" });
+  validate = async (data) => {
+    const rules = {
+      name: "required",
+    };
+
+    const message = {
+      "name.required": "Name field cannot be empty",
+    };
+    try {
+      await validateAll(data, rules, message).then(() => this.addItemToCart());
+    } catch (errors) {
+      const formattedErrors = {};
+      console.log("=====", errors.response);
+      errors.forEach((error) => (formattedErrors[error.field] = error.message));
+      this.setState({
+        error: formattedErrors,
+      });
     }
-  }
+  };
 
   counter = 0;
   total = 0;
@@ -84,7 +114,6 @@ export default class AddItem extends Component {
   addItemToCart() {
     const { cartNumber } = this.props.route.params;
 
-    alert("Added");
     const {
       name,
       price,
@@ -93,7 +122,6 @@ export default class AddItem extends Component {
       glutenSwitch,
       taxSwitch,
       medSwitch,
-      total,
     } = this.state;
     this.counter += 1;
     this.total += price * quantity;
@@ -106,8 +134,6 @@ export default class AddItem extends Component {
       taxSwitch,
       medSwitch,
     };
-    this.props.navigation.navigate("NewCart");
-
     firebase
       .database()
       .ref(
@@ -125,11 +151,15 @@ export default class AddItem extends Component {
           .ref(
             "User/" +
               firebase.auth().currentUser.uid +
-              "/Carts/Cart" +
+              "/Carts/Cart " +
               cartNumber
           )
           .update({
-            total: total,
+            total: this.total,
+            product: this.counter,
+          })
+          .then(() => {
+            alert("New Item Added");
           })
           .catch((error) => {
             console.log(error);
@@ -140,145 +170,270 @@ export default class AddItem extends Component {
       });
   }
 
-  render() {
-    const { search } = this.state;
-    return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <ImageBackground
-          source={require("../assets/Home-screen.jpg")}
-          style={styles.backgroundImage}
-        >
-          <View style={styles.topView}>
-            <View>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("NewCart")}
-                title="Go NewCart"
-              >
-                <AntDesign name="close" size={50} color="darkgreen" />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.textElement}>Add Items</Text>
-            <View>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("ViewCart")}
-                title="Go ViewCart"
-              >
-                <AntDesign name="shoppingcart" size={50} color="darkgreen" />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <SearchBar
-            placeholder="Type Here..."
-            onChangeText={this.updateSearch}
-            value={search}
-          />
-          <ScrollView style={styles.scrollView}>
-            {/* item name field */}
-            <View style={styles.inner}>
-              <TextInput
-                style={styles.textInput}
-                placeholder={"Enter Item name"}
-                placeholderTextColor="black"
-                onChangeText={(text) => this.setState({ name: text })}
-                onBlur={() => this.nameValidator()}
-              />
-              {/* price field */}
-              <TextInput
-                style={styles.textInput}
-                placeholder={"Enter price"}
-                placeholderTextColor="black"
-                inputmode="numeric"
-                keyboardType="numeric"
-                onChangeText={(text) => this.setState({ price: text })}
-              />
-              <View style={styles.switchTextBox}>
-                {/* switch glutten free*/}
-                <Text style={styles.font}>Gluten Free</Text>
-                <View style={styles.switchButton}>
-                  <Switch
-                    onValueChange={this.GlutenSwitch}
-                    value={this.state.glutenSwitch}
-                  />
-                </View>
-              </View>
-              {/* consumers field */}
-              <TextInput
-                style={styles.textInput}
-                keyboardType="numeric"
-                placeholder={"Number of consumers"}
-                placeholderTextColor="black"
-                inputmode="numeric"
-                maxLength={1}
-                value={this.state.consumer}
-                onChangeText={(text) => this.setState({ consumer: text })}
-              />
-              {/* quantity field */}
-              <TextInput
-                style={styles.textInput}
-                placeholder={"Quantity"}
-                placeholderTextColor="black"
-                inputmode="numeric"
-                maxLength={2}
-                keyboardType="numeric"
-                onChangeText={(text) => this.setState({ quantity: text })}
-              />
-              <View style={styles.switchTextBox}>
-                {/* switch taxable*/}
-                <Text style={styles.font}>Taxable</Text>
-                <View style={styles.switchButton}>
-                  <Switch
-                    onValueChange={this.TaxSwitch}
-                    value={this.state.taxSwitch}
-                  />
-                </View>
-              </View>
-              <View style={styles.switchTextBox}>
-                {/* switch Medical Expenses*/}
-                <Text style={styles.font}>Medical Expense</Text>
-                <View style={styles.switchButton}>
-                  <Switch
-                    onValueChange={this.MedSwitch}
-                    value={this.state.medSwitch}
-                  />
-                </View>
-              </View>
+  /**
+   * Handle the Menu when user click on the BarApp
+   * @param {event} event
+   */
+  handleMenu = (event) => {
+    this.setState({
+      anchorEl: event.currentTarget,
+      open: Boolean(event.currentTarget),
+    });
+  };
+  /**
+   * Log the user out
+   */
+  onLogout = () => {
+    firebase.auth().signOut();
+  };
+  /**
+   * Close the Menu when user tap anywhere on the screen
+   */
+  handleClose = () => {
+    this.setState({ anchorEl: null, open: false });
+  };
 
-              <View style={styles.buttonView}>
-                {/* save button*/}
-                <View style={styles.btnContainer}>
-                  <TouchableOpacity onPress={() => this.addItemToCart()}>
-                    <Text style={styles.textElement}>Save</Text>
-                  </TouchableOpacity>
-                </View>
-                {/* save cart button*/}
-                <View style={styles.btnContainer}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("ViewCart")}
-                    title="Go ViewCart"
-                  >
-                    <Text style={styles.textElement}>Go View Cart</Text>
-                  </TouchableOpacity>
-                </View>
-                {/* cancel button*/}
-                <View style={styles.btnContainer}>
-                  <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate("NewCart")}
-                    title="Go NewCart"
-                  >
-                    <Text style={styles.textElement}>Cancel</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-          </ScrollView>
-        </ImageBackground>
-      </KeyboardAvoidingView>
+  render() {
+    const { classes } = this.props;
+    const { cartNumber } = this.props.route.params;
+
+    return (
+      <View style={{ flex: 1, marginTop: 30 }}>
+        <AppBar style={{ background: "#FDB945" }}>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              New Cart
+            </Typography>
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={this.state.open}
+                onClose={this.handleClose}
+              >
+                <MenuItem
+                  onClick={() => this.props.navigation.navigate("EditAuth")}
+                >
+                  Change authenticate info{" "}
+                </MenuItem>
+                <MenuItem
+                  onClick={() => this.props.navigation.navigate("EditProfile")}
+                >
+                  Edit profile
+                </MenuItem>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <View style={styles.textcontainer}>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontWeight: "1000",
+              fontSize: "30px",
+              textAlign: "left",
+              marginBottom: 15,
+            }}
+          >
+            Add Item
+          </Text>
+        </View>
+        <View style={{ margin: 30, marginTop: 0 }}>
+          <Button
+            variant="outlined"
+            className={classes.buttonLeft}
+            // onClick={() => this.addCart()}
+            startIcon={<PublishIcon />}
+            size="large"
+          >
+            Upload Receipt
+          </Button>
+          <View style={styles.form}>
+            <Text
+              style={{
+                fontFamily: "Questrial",
+                fontSize: 25,
+                marginTop: 20,
+                marginBottom: 10,
+              }}
+            >
+              New Item
+            </Text>
+            <TextField
+              id="name"
+              label="Item name"
+              placeholder="Item name"
+              variant="outlined"
+              value={this.state.name}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ name: value });
+              }}
+              error={!!this.state.error["name"]}
+              helperText={this.state.error["name"]}
+              className={classes.textBox}
+              size="medium"
+            />
+            <TextField
+              id="price"
+              label="Item price"
+              placeholder="Item price"
+              variant="outlined"
+              value={this.state.price}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ price: value });
+              }}
+              className={classes.textBox}
+              size="medium"
+            />
+            <TextField
+              id="quantity"
+              label="Item quantity"
+              placeholder="Item quantity"
+              variant="outlined"
+              value={this.state.quantity}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ quantity: value });
+              }}
+              className={classes.textBox}
+              size="medium"
+            />
+            <TextField
+              id="consumer"
+              label="Number of comsumers"
+              placeholder="Number of comsumers"
+              variant="outlined"
+              value={this.state.consumer}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ consumer: value });
+              }}
+              className={classes.textBox}
+              size="medium"
+            />
+            <FormGroup column className={classes.formGroup}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={this.state.glutenSwitch}
+                    onChange={() => {
+                      this.setState((prevState) => ({
+                        glutenSwitch: !prevState.glutenSwitch,
+                      }));
+                    }}
+                  />
+                }
+                label="Gluten Free"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={this.state.taxSwitch}
+                    onChange={() => {
+                      this.setState((prevState) => ({
+                        taxSwitch: !prevState.taxSwitch,
+                      }));
+                    }}
+                  />
+                }
+                label="Taxable"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="primary"
+                    checked={this.state.medSwitch}
+                    onChange={() => {
+                      this.setState((prevState) => ({
+                        medSwitch: !prevState.medSwitch,
+                      }));
+                    }}
+                  />
+                }
+                label="Mediacal Expense"
+                labelPlacement="end"
+              />
+            </FormGroup>
+          </View>
+          <View>
+            <Fab
+              style={{ marginTop: 20, backgroundColor: "#FDB945" }}
+              variant="extended"
+              onClick={() => this.validate()}
+            >
+              <AddIcon className={classes.icon} />
+              Add
+            </Fab>
+            <Fab
+              style={{ marginTop: 10, backgroundColor: "#A6C424" }}
+              variant="extended"
+              onClick={() => this.props.navigation.navigate("Home")}
+            >
+              <DoneIcon className={classes.icon} />
+              Done
+            </Fab>
+          </View>
+        </View>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          <BottomNavigation
+            value={this.state.valueNumber}
+            onChange={(event) => {
+              const { value } = event.target;
+              this.setState({ valueNumber: value });
+            }}
+            showLabels
+            className={classes.stickToBottom}
+          >
+            <BottomNavigationAction
+              label="Home"
+              onClick={() => this.props.navigation.navigate("Home")}
+              icon={<HomeIcon />}
+            />
+            <BottomNavigationAction
+              label="Report"
+              onClick={() => this.props.navigation.navigate("Report")}
+              icon={<LibraryBooksIcon />}
+            />
+            <BottomNavigationAction
+              label="View Cart"
+              onClick={() => {
+                this.props.navigation.navigate("ViewCart", {
+                  cartNumber: cartNumber,
+                });
+              }}
+              icon={<ShoppingCartIcon />}
+            />
+          </BottomNavigation>
+        </View>
+      </View>
     );
   }
 }
+export default withStyles(styling)(AddItem);
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -356,5 +511,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 10,
     paddingHorizontal: 10,
+  },
+  textcontainer: {
+    marginLeft: 30,
+    lineHeight: 1.4,
   },
 });

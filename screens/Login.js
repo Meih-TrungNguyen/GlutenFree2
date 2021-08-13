@@ -1,9 +1,19 @@
 import React, { Component } from "react";
-import { Button, TextField } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  InputAdornment,
+  InputLabel,
+  FormControl,
+  IconButton,
+  OutlinedInput,
+} from "@material-ui/core";
 import { Text, View, StyleSheet } from "react-native";
 import { validateAll } from "indicative/validator";
 import { useFonts } from "@expo-google-fonts/raleway";
 import { withStyles } from "@material-ui/styles";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 import firebase from "firebase";
 
@@ -30,10 +40,29 @@ export class Login extends Component {
       email: "",
       password: "",
       error: {},
+      showPassword: false,
     };
     this.onSignIn = this.onSignIn.bind(this);
   }
+  /**
+   * Handle Click for the Password TextField, SHow/Hide Password
+   */
+  handleClickShowPassword = () => {
+    this.setState((prevState) => ({
+      showPassword: !prevState.showPassword,
+    }));
+  };
+  /**
+   * Handle Click for the Password TextField, SHow/Hide Password
+   */
+  handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
+  /**
+   * Validating data from user input
+   * @param {this.state} data
+   */
   validate = async (data) => {
     const rules = {
       email: "required|email",
@@ -69,7 +98,9 @@ export class Login extends Component {
       }
     }
   };
-
+  /**
+   * Firebase Auth to sign user in. Navigate to Verify Email if the user is not Verified, else navigate to Home
+   */
   onSignIn() {
     const { email, password } = this.state;
     firebase
@@ -94,7 +125,10 @@ export class Login extends Component {
         });
       });
   }
-
+  /**
+   * render the UI
+   * @returns View
+   */
   render() {
     const { classes } = this.props;
 
@@ -148,20 +182,41 @@ export class Login extends Component {
               className={classes.textBox}
               size="small"
             />
-            <TextField
-              id="password"
-              label="Password"
-              placeholder="Enter password"
-              variant="outlined"
-              onChange={(event) => {
-                const { value } = event.target;
-                this.setState({ password: value });
-              }}
-              error={!!this.state.error["password"]}
-              helperText={this.state.error["password"]}
+            <FormControl
               className={classes.textBox}
+              variant="outlined"
               size="small"
-            />
+            >
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <OutlinedInput
+                id="password"
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.state.password}
+                onChange={(event) => {
+                  const { value } = event.target;
+                  this.setState({ password: value });
+                }}
+                error={!!this.state.error["password"]}
+                helperText={this.state.error["password"]}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {this.state.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={70}
+              />
+            </FormControl>
           </View>
           <Button
             variant="contained"

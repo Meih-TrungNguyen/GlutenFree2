@@ -1,14 +1,53 @@
 import React, { Component } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-} from "react-native";
-import { validateAll } from "indicative/validator";
+import { View, StyleSheet, Text } from "react-native";
 import firebase from "firebase";
+import "firebase/firestore";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  MenuItem,
+  TextField,
+  InputAdornment,
+  InputLabel,
+  FormControl,
+  IconButton,
+  OutlinedInput,
+  Menu,
+} from "@material-ui/core";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import { useFonts } from "@expo-google-fonts/raleway";
+import { withStyles } from "@material-ui/styles";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import HomeIcon from "@material-ui/icons/Home";
+
+const styling = (theme) => ({
+  title: {
+    flexGrow: 1,
+  },
+  stickToBottom: {
+    width: "100%",
+    position: "fixed",
+    bottom: 0,
+  },
+  button: {
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 20,
+    fontFamily: "Questrial",
+    fontWeight: "600",
+    backgroundColor: "#FFCD29",
+  },
+  textBox: {
+    marginBottom: 10,
+  },
+});
 
 export class EditAuth extends Component {
   constructor(props) {
@@ -18,13 +57,55 @@ export class EditAuth extends Component {
       newpassword: "",
       email: "",
       error: {},
+      anchorEl: null,
+      open: false,
+      showPassword: false,
+      valueNumber: 0,
     };
   }
-
-  onLogout() {
+  /**
+   * Log the user out
+   */
+  onLogout = () => {
     firebase.auth().signOut();
-  }
+  };
+  /**
+   * Handle Click for the Password TextField, SHow/Hide Password
+   */
+  handleClickShowPassword = () => {
+    this.setState((prevState) => ({
+      showPassword: !prevState.showPassword,
+    }));
+  };
+  /**
+   * Handle Click for the Password TextField, SHow/Hide Password
+   */
+  handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
+  /**
+   * Handle the Menu when user click on the BarApp
+   * @param {event} event
+   */
+  handleMenu = (event) => {
+    this.setState({
+      anchorEl: event.currentTarget,
+      open: Boolean(event.currentTarget),
+    });
+  };
+
+  /**
+   * Close the Menu when user tap anywhere on the screen
+   */
+  handleClose = () => {
+    this.setState({ anchorEl: null, open: false });
+  };
+  /**
+   * Use user's current password to reauthenticate to change user's authentication data
+   * @param {string} currentpassword
+   * @returns UserCredential
+   */
   reauthenticate(currentpassword) {
     const user = firebase.auth().currentUser;
     const cred = firebase.auth.EmailAuthProvider.credential(
@@ -33,7 +114,9 @@ export class EditAuth extends Component {
     );
     return user.reauthenticateWithCredential(cred);
   }
-
+  /**
+   * Update user's password, password must has at least 6 characters
+   */
   onPasswordChange() {
     const { currentpassword, newpassword } = this.state;
     this.reauthenticate(currentpassword)
@@ -42,11 +125,12 @@ export class EditAuth extends Component {
         user
           .updatePassword(newpassword)
           .then(() => {
-            alert("Password was changed");
+            alert("Password has been updated");
           })
           .catch((error) => {
+            const formattedErrors = {};
             if (error.code === "auth/weak-password") {
-              alert("The password must be 6 characters long or more.");
+              formattedErrors["password"] = error.message;
             }
             console.log(error);
           });
@@ -55,13 +139,16 @@ export class EditAuth extends Component {
         this.onLogout();
       })
       .catch((error) => {
+        const formattedErrors = {};
         if (error.code === "auth/wrong-password") {
-          alert("The password is invalid");
+          formattedErrors["cpassword"] = error.message;
         }
         console.log(error);
       });
   }
-
+  /**
+   * Update user's email, email must have correct syntax
+   */
   onEmailChange() {
     const { currentpassword, email } = this.state;
     this.reauthenticate(currentpassword)
@@ -78,11 +165,12 @@ export class EditAuth extends Component {
               });
           })
           .then(() => {
-            alert("Email was changed");
+            alert("Email has been updated");
           })
           .catch((error) => {
+            const formattedErrors = {};
             if (error.code === "auth/invalid-email") {
-              alert("The email address is badly formatted.");
+              formattedErrors["email"] = error.message;
             }
             console.log(error);
           });
@@ -91,131 +179,217 @@ export class EditAuth extends Component {
         this.onLogout();
       })
       .catch((error) => {
+        const formattedErrors = {};
         if (error.code === "auth/wrong-password") {
-          alert("The password is invalid");
+          formattedErrors["cpassword"] = error.message;
         }
         console.log(error);
       });
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <ImageBackground
-        source={require("../assets/Home-screen.jpg")}
-        style={styles.backgroundImage}
-      >
+      <View style={{ flex: 1, marginTop: 30 }}>
+        <AppBar style={{ background: "#FDB945" }}>
+          <Toolbar>
+            <Typography variant="h6" className={classes.title}>
+              Change Auth Info
+            </Typography>
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={this.state.open}
+                onClose={this.handleClose}
+              >
+                <MenuItem
+                  onClick={() => this.props.navigation.navigate("EditAuth")}
+                >
+                  Change authenticate info
+                </MenuItem>
+                <MenuItem
+                  onClick={() => this.props.navigation.navigate("EditProfile")}
+                >
+                  Edit profile
+                </MenuItem>
+                <MenuItem onClick={() => this.onLogout()}>Logout</MenuItem>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <View style={styles.textcontainer}>
+          <Text
+            style={{
+              fontFamily: "Questrial",
+              fontSize: "25px",
+              textAlign: "left",
+            }}
+          >
+            Please enter your current password to update your information.
+          </Text>
+        </View>
         <View style={styles.screenContainer}>
-          {this.state.error["currentpassword"] && (
-            <Text
-              style={{
-                fontSize: 15,
-                color: "red",
-                marginBottom: 2,
-                paddingLeft: 10,
-              }}
+          <View style={styles.form}>
+            <FormControl
+              className={classes.textBox}
+              variant="outlined"
+              size="small"
+              error={!!this.state.error["cpassword"]}
             >
-              {this.state.error["currentpassword"]}
-            </Text>
-          )}
-          <View style={styles.textBoxView}>
-            <TextInput
-              style={styles.textBox}
-              placeholder="Enter Current Password"
-              autoCapitalize="none"
-              secureTextEntry={true}
-              onChangeText={(currentpassword) =>
-                this.setState({ currentpassword })
-              }
-            />
-          </View>
-          {this.state.error["newpassword"] && (
-            <Text
-              style={{
-                fontSize: 15,
-                color: "red",
-                marginBottom: 2,
-                paddingLeft: 10,
-              }}
+              <InputLabel htmlFor="cpassword">Current Password</InputLabel>
+              <OutlinedInput
+                id="cpassword"
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.state.currentpassword}
+                onChange={(event) => {
+                  const { value } = event.target;
+                  this.setState({ currentpassword: value });
+                }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {this.state.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={70}
+              />
+            </FormControl>
+            <FormControl
+              className={classes.textBox}
+              variant="outlined"
+              size="small"
             >
-              {this.state.error["newpassword"]}
-            </Text>
-          )}
-          <View style={styles.textBoxView}>
-            <TextInput
-              style={styles.textBox}
-              placeholder="Enter New Password"
-              autoCapitalize="none"
-              secureTextEntry={true}
-              onChangeText={(newpassword) => this.setState({ newpassword })}
-            />
-          </View>
-
-          <View style={styles.space} />
-          <View style={styles.buttons}>
-            <TouchableOpacity onPress={() => this.onPasswordChange()}>
-              <Text style={styles.textElement}>Change Password</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.space} />
-
-          {this.state.error["email"] && (
-            <Text
-              style={{
-                fontSize: 15,
-                color: "red",
-                marginBottom: 2,
-                paddingLeft: 10,
-              }}
+              <InputLabel htmlFor="password">New Password</InputLabel>
+              <OutlinedInput
+                id="password"
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.state.newpassword}
+                onChange={(event) => {
+                  const { value } = event.target;
+                  this.setState({ newpassword: value });
+                }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {this.state.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={70}
+              />
+            </FormControl>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={() => this.onPasswordChange()}
             >
-              {this.state.error["email"]}
-            </Text>
-          )}
-          <View style={styles.textBoxView}>
-            <TextInput
-              style={styles.textBox}
-              placeholder="Enter New Email"
-              autoCapitalize="none"
-              keyboardType="email-address"
-              onChangeText={(email) => this.setState({ email })}
+              Update Password
+            </Button>
+            <TextField
+              id="email"
+              label="New Email"
+              placeholder="New Email"
+              variant="outlined"
+              value={this.state.email}
+              onChange={(event) => {
+                const { value } = event.target;
+                this.setState({ email: value });
+              }}
+              error={!!this.state.error["email"]}
+              helperText={this.state.error["email"]}
+              className={classes.textBox}
+              size="small"
             />
-          </View>
-
-          <View style={styles.space} />
-          <View style={styles.buttons}>
-            <TouchableOpacity onPress={() => this.onEmailChange()}>
-              <Text style={styles.textElement}>Change Email</Text>
-            </TouchableOpacity>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={() => this.onEmailChange()}
+            >
+              Update Email{" "}
+            </Button>
           </View>
         </View>
-      </ImageBackground>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          <BottomNavigation
+            value={this.state.valueNumber}
+            onChange={(event) => {
+              const { value } = event.target;
+              this.setState({ valueNumber: value });
+            }}
+            showLabels
+            className={classes.stickToBottom}
+          >
+            <BottomNavigationAction
+              label="Home"
+              onClick={() => this.props.navigation.navigate("Home")}
+              icon={<HomeIcon />}
+            />
+            <BottomNavigationAction
+              label="Report"
+              onClick={() => this.props.navigation.navigate("Report")}
+              icon={<LibraryBooksIcon />}
+            />
+          </BottomNavigation>
+        </View>
+      </View>
     );
   }
 }
+export default withStyles(styling)(EditAuth);
+
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    paddingTop: 200,
-    paddingHorizontal: 10,
+    paddingTop: 20,
     alignItems: "center",
   },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  },
-  buttons: {
-    backgroundColor: "lightgrey",
-    fontSize: 200,
-    height: 50,
-    width: 260,
-  },
-  space: {
-    width: 20,
-    height: 10,
+  textcontainer: {
+    marginTop: 60,
+    marginLeft: 30,
+    lineHeight: 1.4,
   },
   textBoxView: {
     flexDirection: "row",
-    marginBottom: 20,
+    marginBottom: 40,
   },
   textBox: {
     paddingHorizontal: 10,
@@ -236,4 +410,3 @@ const styles = StyleSheet.create({
     color: "black",
   },
 });
-export default EditAuth;
