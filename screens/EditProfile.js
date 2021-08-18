@@ -291,7 +291,7 @@ export class EditProfile extends Component {
                 Prince Edward County
               </MenuItem>
               <MenuItem value={"Quinte West"}>Quinte West</MenuItem>
-              <MenuItem value={"Richmond Hill"}>CRichmond Hillity</MenuItem>
+              <MenuItem value={"Richmond Hill"}>Richmond Hill</MenuItem>
               <MenuItem value={"Sarnia"}>Sarnia</MenuItem>
               <MenuItem value={"Sault Ste. Marie"}>Sault Ste. Marie</MenuItem>
               <MenuItem value={"St. Catharines"}>St. Catharines</MenuItem>

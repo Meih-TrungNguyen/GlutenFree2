@@ -155,7 +155,13 @@ export class Register extends Component {
         firebase.auth().currentUser.sendEmailVerification;
       })
       .catch((error) => {
-        console.log(error);
+        const formattedErrors = {};
+        if (error.code === "auth/email-already-in-use") {
+          formattedErrors["email"] = error.message;
+        }
+        this.setState({
+          error: formattedErrors,
+        });
       });
   }
 
@@ -343,7 +349,7 @@ export class Register extends Component {
                 Prince Edward County
               </MenuItem>
               <MenuItem value={"Quinte West"}>Quinte West</MenuItem>
-              <MenuItem value={"Richmond Hill"}>CRichmond Hillity</MenuItem>
+              <MenuItem value={"Richmond Hill"}>Richmond Hill</MenuItem>
               <MenuItem value={"Sarnia"}>Sarnia</MenuItem>
               <MenuItem value={"Sault Ste. Marie"}>Sault Ste. Marie</MenuItem>
               <MenuItem value={"St. Catharines"}>St. Catharines</MenuItem>
